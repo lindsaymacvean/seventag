@@ -1,0 +1,220 @@
+
+<!--mixin icon(name)-->
+<!--    i.icon-#{name}-->
+<div class="row">
+  <cc-breadcrumb ng-hide="view.success"></cc-breadcrumb>
+</div>
+<div ng-if="currentContainer.$container.hasPermission('operator')" class="row">
+  <ul ng-init="view.activeTab = 'general'" class="nav nav-tabs">
+    <li id="container-options-general" ng-class="{active: view.activeTab === 'general'}"><a translate="General" ng-click="view.activeTab = 'general'"></a></li>
+    <li id="container-options-privacy" ng-class="{active: view.activeTab === 'privacy'}"><a translate="Privacy" ng-click="view.activeTab = 'privacy'"></a></li>
+    <li id="container-options-permissions" ng-class="{active: view.activeTab === 'permissions'}"><a translate="Permissions" ng-click="view.activeTab = 'permissions'"></a></li>
+  </ul>
+  <div class="tab-content">
+    <div ng-switch="view.activeTab">
+      <div cg-busy="{promise: view.containerPromise, templateUrl: &quot;app/views/loader.html&quot;}" ng-switch-when="general" class="tab-pane panel panel-default">
+        <div class="panel-body">
+          <cc-notification-form ng-if="$state.includes('editProfile')" ng-show="!view.loading"></cc-notification-form>
+          <form name="editContainerForm" novalidate="novalidate" stg-form="stg-form" form-resource="undefined">
+            <div ng-init="view.validateContainer = false" class="row">
+              <div class="col-lg-8 col-md-12 col-sm-12">
+                <div ng-class="{'has-error': (editContainerForm.name.$dirty &amp;&amp; editContainerForm.name.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.name.$error.required) || editContainerForm.name.$error.name, 'has-feedback': (editContainerForm.name.$dirty &amp;&amp; editContainerForm.name.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.name.$error.required)}" class="form-group">
+                  <label class="control-label">{{'Container name'|translate}} <span class="important">*</span></label>
+                  <input type="text" name="name" ng-model="view.container.name" ng-keypress="editContainerForm.name.$error.name !== undefined ? editContainerForm.name.$error = {} : ''" class="form-control" id="container-form-name" ng-required="true" placeholder="{{'Place your container\'s name'|translate}}"/><span ng-if="(editContainerForm.$submitted &amp;&amp; editContainerForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                  <div id="container-form-name-validation-message" ng-show="(editContainerForm.name.$error.required &amp;&amp; editContainerForm.name.$dirty) || (view.validateContainer &amp;&amp; editContainerForm.name.$error.required)">
+                    <p translate="Required" class="error"></p>
+                  </div>
+                  <div id="undefined-validation-message" ng-show="editContainerForm.name.$error.name">
+                    <p ng-repeat="error in editContainerForm.name.$error.name" class="error">{{ error|translate }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <!-- Place for help-->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8 col-md-12 col-sm-12">
+                <div ng-class="{'has-error': (editContainerForm.code.$dirty &amp;&amp; editContainerForm.code.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.code.$error.required)}" class="form-group">
+                  <label class="control-label">{{"Container code"|translate}}</label>
+                  <cc-help placement="right" content="{{&quot;Container code is a snippet which helps you to fire all your tags on your website. Paste the Container code into your website’s code (in between the &amp;lt;body&amp;gt; &amp;lt;&amp;#47;body&amp;gt; element of all your pages).&quot;|translate}}"></cc-help>
+                  <textarea name="code" ng-model="view.container.code" class="form-control" rows="12" readonly="readonly" cc-clipboard="cc-clipboard"></textarea>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <!-- Place for help-->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8 col-md-12 col-sm-12">
+                <div ng-class="{'has-error': (editContainerForm.delay.$dirty &amp;&amp; editContainerForm.delay.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.delay.$error.required) || editContainerForm.delay.$error.delay, 'has-feedback': (editContainerForm.delay.$dirty &amp;&amp; editContainerForm.delay.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.delay.$error.required)}" class="form-group">
+                  <label class="control-label">{{"Delay"|translate}}</label>
+                  <cc-help placement="right" content="{{&quot;Property is used to slow down actions (e.g. redirect) when waiting for tags to be resolved.&quot;|translate}}"></cc-help>
+                  <div class="input-group">
+                    <input type="number" aria-describedby="delay-unit" name="delay" ng-model="view.container.delay" ng-keypress="editContainerForm.delay.$error.delay !== undefined ? editContainerForm.delay.$error = {} : ''" class="form-control" id="container-form-delay" ng-required="true" min="0" max="10000" placeholder="{{'Set delay'|translate}}" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span id="delay.ms" class="input-group-addon">ms</span>
+                  </div><span ng-if="(editContainerForm.$submitted &amp;&amp; editContainerForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                  <div id="container-form-delay-validation-message" ng-show="(editContainerForm.delay.$error.required &amp;&amp; editContainerForm.delay.$dirty) || (view.validateContainer &amp;&amp; editContainerForm.delay.$error.required)">
+                    <p translate="Required" class="error"></p>
+                  </div>
+                  <div id="container-form-delay-validation-message" ng-show="(editContainerForm.delay.$error.number &amp;&amp; editContainerForm.delay.$dirty) || (view.validateContainer &amp;&amp; editContainerForm.delay.$error.number)">
+                    <p translate="Invalid value. Please enter a number." class="error"></p>
+                  </div>
+                  <div id="container-form-delay-validation-message" ng-show="(editContainerForm.delay.$viewValue &lt; 0)">
+                    <p translate="Invalid value. Please enter a positive number." class="error"></p>
+                  </div>
+                  <div id="container-form-delay-validation-message" ng-show="(editContainerForm.delay.$viewValue &gt; 10000)">
+                    <p translate="Invalid value. Please enter lower value." class="error"></p>
+                  </div>
+                  <div id="undefined-validation-message" ng-show="editContainerForm.delay.$error.delay">
+                    <p ng-repeat="error in editContainerForm.delay.$error.delay" class="error">{{ error|translate }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4"></div>
+            </div>
+            <div class="form-inline">
+              <div class="form-group">
+                <input type="submit" value="{{&quot;Save&quot;|translate}}" class="btn btn-primary" id="container-form-submit-button" ng-click="editContainerForm.$valid ? view.submitForm(view.container) : view.displayInvalidFormMessage()"/>
+              </div>
+              <div class="form-group">
+                <a class="btn btn-link btn-md confirm-standalone" cc-confirm="view.removeContainer()" id="container-form-delete-button"><i class="icon-delete"></i><span translate="Delete"></span>
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div ng-switch-when="privacy" class="panel panel-default tab-pane">
+        <!--mixin icon(name)-->
+        <!--    i.icon-#{name}-->
+        <div ng-controller="clearcode.tm.tagContainer.PrivacyController as privacyCtrl" cg-busy="{promise: privacyCtrl.privacyPromise, templateUrl: &quot;app/views/loader.html&quot;}">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="form-group">
+                  <div class="alert alert-info"><span translate="Embedding the Opt-out snippet in your website(s) html markup helps you to respect visitors privacy."></span><br/><span translate="To ensure correct behavior, remember to put it inside your page &amp;lt;body&amp;gt;."></span><br/><br/><span translate="Please be aware the user-facing message generated by the opt-out code will be displayed in English."></span></div>
+                </div>
+              </div>
+              <div class="col-lg-8 col-md-12 col-sm-12">
+                        <div ng-class="{'has-error': (editContainerForm.privacyOptoutCode.$dirty &amp;&amp; editContainerForm.privacyOptoutCode.$invalid) || (false &amp;&amp; editContainerForm.privacyOptoutCode.$error.required)}" class="form-group">
+                          <label class="control-label">{{'Opt-out code'|translate}}</label>
+                          <cc-help placement="right" content="{{'During tag edition in &quot;Advanced settings&quot; section you can specify, if the tag should be turned off. Just select &quot;Respect visitors privacy&quot;.'|translate}}"></cc-help>
+                          <textarea name="privacyOptoutCode" ng-model="privacyCtrl.code" class="form-control" rows="10" readonly="readonly" cc-clipboard="cc-clipboard"></textarea>
+                        </div>
+              </div>
+              <div class="col-lg-4">
+                <!-- Place for help-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div cg-busy="{promise: view.containerPromise, templateUrl: &quot;app/views/loader.html&quot;}" ng-switch-when="permissions" class="panel panel-default tab-pane">
+        <div class="panel-body">
+          <cc-notification-form ng-if="$state.includes('editProfile')" ng-show="!view.loading"></cc-notification-form>
+          <!--mixin icon(name)-->
+          <!--    i.icon-#{name}-->
+          <div ng-controller="clearcode.tm.tagContainer.PermissionsController as permissionsCtrl">
+            <table ng-table="permissionsCtrl.usersTable" template-header="permission-list-st-header.html" template-pagination="st-pagination.html" class="table table-condensed stg-table">
+              <tr id="user-{{ item.user.id }}-row" ng-repeat="item in $data">
+                <td class="stg-col-2"><span title="{{ item.user.first_name + ' ' + item.user.last_name }}">{{ item.user.first_name + ' ' + item.user.last_name | limitTo : 60 }}{{ item.user.first_name.length + item.user.last_name.length > 59 ? '...' : '' }}</span></td>
+                <td class="stg-col-4">
+                  <input type="radio" id="user-{{ item.user.id }}-radio-no-access" name="user_{{ item.user.id }}" cc-radio="cc-radio" cc-radio-model="item.permissions" value="noaccess" ng-click="permissionsCtrl.isValid(item, 'noaccess') ? permissionsCtrl.setPermission(item, 'noaccess') : ''" cc-disabled="item.user.roles.indexOf('ROLE_SUPER_ADMIN') !== -1"/>
+                </td>
+                <td class="stg-col-4">
+                  <input type="radio" id="user-{{ item.user.id }}-radio-view" name="user_{{ item.user.id }}" cc-radio="cc-radio" cc-radio-model="item.permissions" value="view" ng-click="permissionsCtrl.isValid(item, 'view') ? permissionsCtrl.setPermission(item, 'view') : ''" cc-disabled="item.user.roles.indexOf('ROLE_SUPER_ADMIN') !== -1"/>
+                </td>
+                <td class="stg-col-4">
+                  <input type="radio" id="user-{{ item.user.id }}-radio-edit" name="user_{{ item.user.id }}" cc-radio="cc-radio" cc-radio-model="item.permissions" value="edit" ng-click="permissionsCtrl.isValid(item, 'edit') ? permissionsCtrl.setPermission(item, 'edit') : ''" cc-disabled="item.user.roles.indexOf('ROLE_SUPER_ADMIN') !== -1"/>
+                </td>
+                <td class="stg-col-4">
+                  <input type="radio" id="user-{{ item.user.id }}-radio-publish" name="user_{{ item.user.id }}" cc-radio="cc-radio" cc-radio-model="item.permissions" value="publish" ng-click="permissionsCtrl.isValid(item, 'publish') ? permissionsCtrl.setPermission(item, 'publish') : ''" cc-disabled="item.user.roles.indexOf('ROLE_SUPER_ADMIN') !== -1"/>
+                </td>
+                <td class="stg-col-4">
+                  <input type="radio" id="user-{{ item.user.id }}-radio-owner" name="user_{{ item.user.id }}" cc-radio="cc-radio" cc-radio-model="item.permissions" value="operator" ng-click="permissionsCtrl.isValid(item, 'operator') ? permissionsCtrl.setPermission(item, 'operator') : ''" cc-disabled="item.user.roles.indexOf('ROLE_SUPER_ADMIN') !== -1"/>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-if="!currentContainer.$container.hasPermission('operator')" class="row">
+  <div cg-busy="{promise: view.containerPromise, templateUrl: &quot;app/views/loader.html&quot;}" class="panel panel-default">
+    <div class="panel-body">
+      <cc-notification-form ng-if="$state.includes('editProfile')" ng-show="!view.loading"></cc-notification-form>
+      <h4 ng-hide="view.success" class="form-heading">Edit options</h4>
+                <form name="editContainerForm" novalidate="novalidate" stg-form="stg-form" form-resource="undefined">
+                  <!--mixin icon(name)-->
+                  <!--    i.icon-#{name}-->
+                  <div ng-init="view.validateContainer = false" class="row">
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                      <div ng-class="{'has-error': (editContainerForm.viewContainerName.$dirty &amp;&amp; editContainerForm.viewContainerName.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.viewContainerName.$error.required) || editContainerForm.viewContainerName.$error.viewContainerName, 'has-feedback': (editContainerForm.viewContainerName.$dirty &amp;&amp; editContainerForm.viewContainerName.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.viewContainerName.$error.required)}" class="form-group">
+                        <label class="control-label">{{'Container name'|translate}} <span class="important">*</span></label>
+                        <input type="text" name="viewContainerName" ng-model="view.container.name" ng-keypress="editContainerForm.viewContainerName.$error.viewContainerName !== undefined ? editContainerForm.viewContainerName.$error = {} : ''" class="form-control" id="container-form-name" ng-required="true" placeholder="{{'Place your container\'s name'|translate}}" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span ng-if="(editContainerForm.$submitted &amp;&amp; editContainerForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                        <div id="container-form-name-validation-message" ng-show="(editContainerForm.viewContainerName.$error.required &amp;&amp; editContainerForm.viewContainerName.$dirty) || (view.validateContainer &amp;&amp; editContainerForm.viewContainerName.$error.required)">
+                          <p translate="Required" class="error"></p>
+                        </div>
+                        <div id="undefined-validation-message" ng-show="editContainerForm.viewContainerName.$error.viewContainerName">
+                          <p ng-repeat="error in editContainerForm.viewContainerName.$error.viewContainerName" class="error">{{ error|translate }}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <!-- Place for help-->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                      <div ng-class="{'has-error': (editContainerForm.viewContainerCode.$dirty &amp;&amp; editContainerForm.viewContainerCode.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.viewContainerCode.$error.required)}" class="form-group">
+                        <label class="control-label">{{'Container code'|translate}}</label>
+                        <cc-help placement="right" content="{{'Container code is a snippet which helps you to fire all your tags on your website. Paste the Container code into your website’s code (in between the &amp;lt;body&amp;gt; &amp;lt;&amp;#47;body&amp;gt; element of all your pages).'|translate}}"></cc-help>
+                        <textarea name="viewContainerCode" ng-model="view.container.code" class="form-control" rows="10" readonly="readonly" cc-clipboard="cc-clipboard"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <!-- Place for help-->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                      <div ng-class="{'has-error': (editContainerForm.delay.$dirty &amp;&amp; editContainerForm.delay.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.delay.$error.required) || editContainerForm.delay.$error.delay, 'has-feedback': (editContainerForm.delay.$dirty &amp;&amp; editContainerForm.delay.$invalid) || (view.validateContainer &amp;&amp; editContainerForm.delay.$error.required)}" class="form-group">
+                        <label class="control-label">{{"Delay"|translate}}</label>
+                        <cc-help placement="right" content="{{&quot;Property is used to slow down actions (e.g. redirect) when waiting for tags to be resolved.&quot;|translate}}"></cc-help>
+                        <div class="input-group">
+                          <input type="number" aria-describedby="delay-unit" name="delay" ng-model="view.container.delay" ng-keypress="editContainerForm.delay.$error.delay !== undefined ? editContainerForm.delay.$error = {} : ''" class="form-control" id="container-form-delay" ng-required="true" min="0" max="10000" placeholder="{{'Set delay'|translate}}" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span id="delay.ms" class="input-group-addon">ms</span>
+                        </div><span ng-if="(editContainerForm.$submitted &amp;&amp; editContainerForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                        <div id="container-form-delay-validation-message" ng-show="(editContainerForm.delay.$error.required &amp;&amp; editContainerForm.delay.$dirty) || (view.validateContainer &amp;&amp; editContainerForm.delay.$error.required)">
+                          <p translate="Required" class="error"></p>
+                        </div>
+                        <div id="container-form-delay-validation-message" ng-show="(editContainerForm.delay.$error.number &amp;&amp; editContainerForm.delay.$dirty) || (view.validateContainer &amp;&amp; editContainerForm.delay.$error.number)">
+                          <p translate="Invalid value. Please enter a number." class="error"></p>
+                        </div>
+                        <div id="container-form-delay-validation-message" ng-show="(editContainerForm.delay.$viewValue &lt; 0)">
+                          <p translate="Invalid value. Please enter a positive number." class="error"></p>
+                        </div>
+                        <div id="container-form-delay-validation-message" ng-show="(editContainerForm.delay.$viewValue &gt; 10000)">
+                          <p translate="Invalid value. Please enter lower value." class="error"></p>
+                        </div>
+                        <div id="undefined-validation-message" ng-show="editContainerForm.delay.$error.delay">
+                          <p ng-repeat="error in editContainerForm.delay.$error.delay" class="error">{{ error|translate }}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4"></div>
+                  </div>
+                  <div ng-if="currentContainer.$container.hasPermission('edit')" class="form-inline">
+                    <div class="form-group">
+                      <input type="submit" value="{{&quot;Save&quot;|translate}}" class="btn btn-primary" id="container-form-submit-button" ng-click="editContainerForm.$valid ? view.submitForm(view.container) : view.validateContainer = true"/>
+                    </div>
+                    <div class="form-group">
+                      <a class="btn btn-link btn-md confirm-standalone" cc-confirm="view.removeContainer()" id="container-form-delete-button"><i class="icon-delete"></i><span translate="Delete"></span>
+                      </a>
+                    </div>
+                  </div>
+                </form>
+    </div>
+  </div>
+</div>

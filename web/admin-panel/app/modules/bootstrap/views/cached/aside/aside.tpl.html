@@ -1,0 +1,15 @@
+
+<div tabindex="-1" role="dialog" class="aside">
+  <div class="aside-dialog">
+    <div class="aside-content">
+      <div ng-show="title" class="aside-header">
+        <button type="button" ng-click="$hide()" class="close">&times;</button>
+        <h4 ng-bind="title" class="aside-title"></h4>
+      </div>
+      <div ng-bind="content" class="aside-body"></div>
+      <div class="aside-footer">
+        <button type="button" ng-click="$hide()" translate="Close" class="btn btn-default"></button>
+      </div>
+    </div>
+  </div>
+</div>

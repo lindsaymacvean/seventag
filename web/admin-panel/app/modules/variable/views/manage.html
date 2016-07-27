@@ -1,0 +1,36 @@
+
+<div class="row">
+  <cc-breadcrumb></cc-breadcrumb>
+</div>
+<div class="row">
+  <h2 class="page-header"><i class="icon-variable"></i><strong translate="Variables"></strong>
+    <cc-help placement="right" content="{{'A variable store data from your browser to use it in several places e.g. resolving triggers'|translate}}"></cc-help>
+    <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() &gt; 0" class="pull-right">
+      <a class="btn btn-primary btn-md stg-link-btn" id="variable-list-create-link" href="href" ui-sref="variableCreate({containerId: activeContainerId})" ng-if="view.permissions.indexOf('edit') !== -1"><span class="plus">+</span><strong translate="Add a variable"></strong>
+      </a>
+    </div>
+  </h2>
+  <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" class="alert alert-info alert-empty">
+    <h2 class="text-center"><strong translate="Your list is empty" translate-values="{ list: ENTITY_NAME.toLowerCase() }"></strong></h2>
+    <p ng-if="(currentContainer.$container.hasPermission('edit'))" class="text-center"><span translate="To add a new click the button below." translate-value="{ object: ENTITY_NAME }"></span></p>
+    <p class="text-center action">
+      <a class="btn btn-primary btn-md stg-link-btn" id="variable-list-create-link" href="href" ui-sref="variableCreate({containerId: activeContainerId})" ng-if="view.permissions.indexOf('edit') !== -1"><span class="plus">+</span><strong translate="Add a variable"></strong>
+      </a>
+    </p>
+  </div>
+  <table ng-table="view.tableParams" id="variable-list" template-pagination="st-pagination.html" ng-hide="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" template-header="variable-list-st-header.html" class="table table-blocks">
+    <tbody>
+      <tr ng-repeat="variable in $data" id="variable-list-row{{ $index }}" ng-init="showMenu = false;">
+        <td id="variable-list-row{{ $index }}-name" sortable="name" class="col-md-4 ellipsis"><a href="href" ui-sref="variableEdit({containerId: activeContainerId, variableId: variable.id})" title="{{ variable.name }}">{{ variable.name | limitTo : 30 }}{{variable.name.length > 30 ? '...' : ''}}</a></td>
+        <td id="variable-list-row{{ $index }}-type" class="col-md-2">{{ variable.type.name|translate }}</td>
+        <td id="variable-list-row{{ $index }}-last-edit" class="col-md-3 ellipsis">{{ variable.updatedAt | tmDate }}</td>
+        <td id="variable-list-row-{{ $index }}-action" ng-class="{active: showMenu, 'disabled': view.permissions.indexOf('edit') === -1}" class="col-md-1 actions context-menu-actions">
+          <ul ng-if="showMenu" class="list-inline">
+            <li><a href="" ui-sref="variableEdit({containerId: activeContainerId, variableId: variable.id})" id="variable-list-row-{{ $index }}-edit"><i class="icon-edit"></i><span translate="Edit"></span></a></li>
+            <li><a href="" cc-confirm="view.removeVariable(variable)" id="variable-list-row-{{ $index }}-delete"><i class="icon-delete"></i><span translate="Delete"></span></a></li>
+          </ul><a href="" ng-click="view.permissions.indexOf('edit') !== -1 ? showMenu = !showMenu : ''" class="dots"><i ng-if="view.permissions.indexOf('edit') !== -1" class="icon-dots"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

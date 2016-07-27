@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="application">
+  <head>
+    <meta charset="utf-8">
+    <title>7tag debugger</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link href="##host##/styles.css" rel="stylesheet" type="text/css">
+    <link href="##host##/icons.css" rel="stylesheet" type="text/css">
+  </head>
+  <body><header id="navbar">
+    <a
+        id="navbar-slide-button"
+        href
+        ng-click="debugger.minimizedMemento.isMinimized() ? debugger.minimizedMemento.maximize() : debugger.minimizedMemento.minimize()"
+    >
+        <i class="icon-arrow-thin-right" ng-if="!debugger.minimizedMemento.isMinimized() && !isMobile()"></i>
+        <i class="icon-arrow-thin-left" ng-if="debugger.minimizedMemento.isMinimized() && !isMobile()"></i>
+        <i class="icon-arrow-down" ng-if="debugger.minimizedMemento.isMinimized() && isMobile()"></i>
+        <i class="icon-arrow-up" ng-if="!debugger.minimizedMemento.isMinimized() && isMobile()"></i>
+    </a>
+    <div id="brand-minimize" minimize-element ng-if="isMobile()">
+        <i class="icon-logo"></i>
+    </div>
+    <div id="navbar-brand" minimize-cloak>
+        <i class="icon-logo"></i>
+    </div>
+    <div id="navbar-container-separator" minimize-cloak></div>
+    <div id="navbar-container-name" minimize-cloak>
+        {{ debugger.$containerName }}
+    </div>
+    <a id="navbar-close-button" href minimize-cloak ng-click="debugger.close()"><i class="icon-close"></i></a>
+</header>
+<nav id="navigation">
+    <ul>
+        <li ng-class="{active: $state.includes('overview')}">
+            <a href ui-sref="overview.tags"><%= __('Overview') %></a>
+        </li>
+        <li ng-class="{active: $state.includes('events-log')}">
+            <a href ui-sref="events-log.list"><%= __('Events log') %></a>
+        </li>
+    </ul>
+</nav>
+
+    <div ui-view style="clear:both"> </div><div id="breakpoints">
+    <div id="breakpoints-title">
+        <%= __('Breakpoints') %>
+        <cc-help ng-if="isHelperVisible()" content="<%= __('With breakpoints You can stop the page change events from execution. This makes it easier to check if proper tags were triggered e.g. during form submission') %>" placement="up"></cc-help>
+    </div>
+    <input
+        type="checkbox"
+        id="breakpoints-input"
+        ng-model="debugger.$debugger.breakpoints.enabled"
+        class="stg-toggle"
+        ng-class="{'checked': debugger.$debugger.breakpoints.isEnabled()}"
+    />
+    <label for="breakpoints-input" id="breakpoints-toggle" class="stg-toggle-btn"></label>
+</div>
+<a id="referrer" href="##host##/index.test.html#/report/summary">a link</a>
+    <h1 id="title">Welcome to Jade</h1>
+    <button id="test-button" data-action="bea" class="simple-btn">Be Awesome</button>
+    <h1 id="form-title">Test form</h1>
+    <div class="loginbox">
+      <form name="login" id="test-form">
+        <input type="text" id="user-name-input" name="user">
+        <input type="password" id="user-pass-input" name="pass">
+        <input type="submit" id="submit-button" value="login">
+      </form>
+    </div>
+    <script>window.stgEnv = 'dev';</script>
+    <script src="stg.js"></script>
+    <script type="text/ng-template" id="ccHelp.html"><i class="help-tooltip"><img tooltip-placement="{{ placement }}" tooltip-html-unsafe="{{ content }}" ng-init="active = false; icon = 'circle'" ng-mouseenter="active = true; icon = 'fill'" ng-mouseleave="active = false; icon = 'circle'" ng-src="##host##/design/icons/info-{{ icon }}.svg" tooltip-class="help-tooltip-wrapper" class="help-icon"></i></script>
+    <script src="##host##/vendor.js"></script>
+    <script src="##host##/scripts.js"></script>
+    <script src="##host##/templates.cache.js"></script>
+  </body>
+</html>

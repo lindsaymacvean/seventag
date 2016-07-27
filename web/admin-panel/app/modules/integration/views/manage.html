@@ -1,0 +1,34 @@
+
+<div class="row">
+  <cc-breadcrumb></cc-breadcrumb>
+</div>
+<div class="row">
+  <h2 class="page-header"><i class="icon-integrations"></i><strong translate="Integrations"></strong>
+    <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() &gt; 0" class="pull-right">
+      <a class="btn btn-primary btn-md stg-link-btn" id="integration-list-create-link" href="href" ui-sref="integrationCreate()"><span class="plus">+</span><strong translate="Add an integration"></strong>
+      </a>
+    </div>
+  </h2>
+  <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" class="alert alert-info alert-empty">
+    <h2 class="text-center"><strong translate="Your list is empty" translate-values="{ list: ENTITY_NAME.toLowerCase() }"></strong></h2>
+    <p ng-if="(currentContainer.$container.hasPermission('edit'))" class="text-center"><span translate="To add a new click the button below." translate-value="{ object: ENTITY_NAME }"></span></p>
+    <p class="text-center action">
+      <a class="btn btn-primary btn-md stg-link-btn" id="integration-list-create-link" href="href" ui-sref="integrationCreate()"><span class="plus">+</span><strong translate="Add an integration"></strong>
+      </a>
+    </p>
+  </div>
+  <table ng-table="view.tableParams" id="integration-list" template-pagination="st-pagination.html" ng-hide="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" template-header="integration-list-st-header.html" class="table table-blocks">
+    <tbody>
+      <tr ng-repeat="integration in $data" id="integration-list-row-{{ $index }}" ng-init="showMenu = false">
+        <td sortable="name" id="integration-list-row-{{ $index }}-user" class="col-md-"><a ui-sref="integrationEdit({integrationId: integration.id})" ui-sref-opts="{id: {{ integration.id }}}"><span title="{{ integration.name }}">{{ integration.name | limitTo : 43 }}</span></a></td>
+        <td sortable="createdAt" id="integration-list-row-{{ $index }}-createdAt" class="col-md-2"> {{ integration.createdAt | tmDate }}</td>
+        <td id="integration-list-row-{{ $index }}-action" ng-class="{active: showMenu}" class="col-md-1 actions context-menu-actions">
+          <ul ng-if="showMenu" class="list-inline users-actions">
+            <li><a href="" ui-sref="integrationEdit({integrationId: integration.id})" id="integration-list-row-{{ $index }}-edit"><i class="icon-edit"></i><span translate="Edit"></span></a></li>
+            <li><a href="" cc-confirm="view.removeIntegration(integration)" id="integration-list-row-{{ $index }}-delete"><i class="icon-delete"></i><span translate="Delete"></span></a></li>
+          </ul><a href="" ng-click="showMenu = !showMenu" class="dots"><i class="icon-dots"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

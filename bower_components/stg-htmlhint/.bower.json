@@ -1,0 +1,14 @@
+{
+  "name": "stg-htmlhint",
+  "homepage": "https://github.com/MarcinMat/HTMLHint",
+  "version": "0.9.12",
+  "_release": "0.9.12",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.12",
+    "commit": "466d3299e6d29cae854d6e0c3ed7ebe08478676e"
+  },
+  "_source": "git://github.com/MarcinMat/HTMLHint.git",
+  "_target": "0.9.12",
+  "_originalSource": "stg-htmlhint"
+}

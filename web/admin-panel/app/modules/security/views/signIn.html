@@ -1,0 +1,31 @@
+
+<!--mixin icon(name)-->
+<!--    i.icon-#{name}-->
+<div class="login-block center-block">
+  <h2 translate="Sign in" class="page-header text-center"></h2>
+  <cc-notification-form ng-hide="view.loading"></cc-notification-form>
+  <div ng-show="view.loading" class="text-center"><img src="app/images/loader.svg" class="loader-spinner"/></div>
+  <form name="loginForm" novalidate="novalidate" ng-hide="view.loading" stg-form="stg-form" form-resource="view.loginPromise">
+    <div ng-class="{'has-error': (loginForm.$submitted &amp;&amp; loginForm.login.$invalid), 'has-feedback': (loginForm.$submitted &amp;&amp; loginForm.login.$invalid)}" class="form-group">
+      <label translate="Email"></label>
+      <input id="signin-form-login" type="text" name="login" ng-model="view.auth.identity" ng-required="true" ng-keypress="loginForm.login.$error.login !== undefined ? loginForm.login.$error = {} : ''" class="form-control"/><span ng-if="(loginForm.$submitted &amp;&amp; loginForm.login.$invalid)" class="form-control-feedback icon-close"></span>
+      <div id="login-validation-message" ng-show="loginForm.login.$error.login">
+        <p ng-repeat="error in loginForm.login.$error.login" class="error">{{ error }}</p>
+      </div>
+    </div>
+    <div ng-class="{'has-error': (loginForm.$submitted &amp;&amp; loginForm.password.$invalid), 'has-feedback': (loginForm.$submitted &amp;&amp; loginForm.password.$invalid)}" class="form-group">
+      <label translate="Password"></label>
+      <input id="signin-form-password" type="password" name="password" ng-model="view.auth.password" ng-required="true" ng-keypress="loginForm.password.$error.password !== undefined ? loginForm.password.$error = {} : ''" class="form-control"/><span ng-if="(loginForm.$submitted &amp;&amp; loginForm.password.$invalid)" class="form-control-feedback icon-close"></span>
+      <div id="password-validation-message" ng-show="loginForm.password.$error.password">
+        <p ng-repeat="error in loginForm.password.$error.password" class="error">{{ error }}</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <p class="text-center">
+        <button class="btn btn-primary btn-md" id="signin-form-submit" type="submit" ng-click="loginForm.$valid ? view.submitForm(view.auth) : view.displayInvalidLoginMessage()" translate="Sign in">
+        </button>
+      </p>
+    </div>
+  </form>
+  <p ng-hide="view.loading" class="text-center"><a ui-sref="resetPassword" translate="Forgot your password?" class="reset"></a></p>
+</div>

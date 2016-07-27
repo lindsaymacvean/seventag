@@ -1,0 +1,34 @@
+
+<div class="row">
+  <cc-breadcrumb ng-hide="view.success || $state.includes('containerExplanation')"></cc-breadcrumb>
+</div>
+<div class="row">
+  <div cg-busy="{promise: view.containerPromise, templateUrl: &quot;app/views/loader.html&quot;}" class="panel panel-default">
+    <div class="panel-body">
+      <cc-notification-form ng-if="$state.includes('editProfile')" ng-show="!view.loading"></cc-notification-form>
+      <h4 ng-hide="view.success" class="form-heading">{{"New container"|translate}}</h4>
+      <form name="createContainerForm" novalidate="novalidate" stg-form="stg-form" form-resource="undefined">
+        <div ng-init="view.validateContainer = false" class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (createContainerForm.viewContainerName.$dirty &amp;&amp; createContainerForm.viewContainerName.$invalid) || (view.validateContainer &amp;&amp; createContainerForm.viewContainerName.$error.required) || createContainerForm.viewContainerName.$error.viewContainerName, 'has-feedback': (createContainerForm.viewContainerName.$dirty &amp;&amp; createContainerForm.viewContainerName.$invalid) || (view.validateContainer &amp;&amp; createContainerForm.viewContainerName.$error.required)}" class="form-group">
+              <label class="control-label">{{'Container name'|translate}} <span class="important">*</span></label>
+              <input type="text" name="viewContainerName" ng-model="view.container.name" ng-keypress="createContainerForm.viewContainerName.$error.viewContainerName !== undefined ? createContainerForm.viewContainerName.$error = {} : ''" class="form-control" id="container-form-name" ng-required="true" placeholder="{{&quot;Enter your container’s name&quot;|translate}}"/><span ng-if="(createContainerForm.$submitted &amp;&amp; createContainerForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+              <div id="container-form-name-validation-message" ng-show="(createContainerForm.viewContainerName.$error.required &amp;&amp; createContainerForm.viewContainerName.$dirty) || (view.validateContainer &amp;&amp; createContainerForm.viewContainerName.$error.required)">
+                <p translate="Required" class="error"></p>
+              </div>
+              <div id="undefined-validation-message" ng-show="createContainerForm.viewContainerName.$error.viewContainerName">
+                <p ng-repeat="error in createContainerForm.viewContainerName.$error.viewContainerName" class="error">{{ error|translate }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="{{&quot;Save&quot;|translate}}" class="btn btn-primary" id="container-form-submit-button" ng-click="createContainerForm.$valid ? view.submitForm(view.container) : view.displayInvalidFormMessage()"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+.dropdown-menu.datepicker(ng-class="'datepicker-mode-' + $mode", style="max-width: 320px")
+    table(style="table-layout: fixed; height: 100%; width: 100%")
+        thead
+            tr.text-center
+                th
+                    button.btn.btn-default.pull-left(tabindex="-1", type="button", ng-click="$selectPane(-1)")
+                        i(class="{{$iconLeft}}")
+                th(colspan="{{ rows[0].length - 2 }}")
+                    button.btn.btn-default.btn-block.text-strong(tabindex="-1", type="button", ng-click="$toggleMode()")
+                        strong(style="text-transform: capitalize;" ng-bind="title")
+                th
+                    button.btn.btn-default.pull-right(tabindex="-1", type="button", ng-click="$selectPane(+1)")
+                        i(class="{{$iconRight}}")
+            tr(ng-show="showLabels", ng-bind-html="labels")
+        tbody
+            tr(ng-repeat="(i, row) in rows", height="{{ 100 / rows.length }}")
+                td.text-center(ng-repeat="(j, el) in row")
+                    button.btn-default(tabindex="-1", type="button", style="width: 100%", ng-class="{'btn-primary': el.selected, 'btn-info btn-today': el.isToday && !el.selected}", ng-click="$select(el.date)", ng-disabled="el.disabled")
+                        span(ng-class="{'text-muted': el.muted}", ng-bind="el.label")
+

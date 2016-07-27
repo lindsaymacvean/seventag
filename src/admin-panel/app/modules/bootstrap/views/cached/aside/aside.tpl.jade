@@ -1,0 +1,10 @@
+.aside(tabindex="-1", role="dialog")
+    .aside-dialog
+        .aside-content
+            .aside-header(ng-show="title")
+                button.close(type="button", ng-click="$hide()") &times;
+                h4.aside-title(ng-bind="title")
+            .aside-body(ng-bind="content")
+            .aside-footer
+                button.btn.btn-default(type="button", ng-click="$hide()", translate="Close")
+

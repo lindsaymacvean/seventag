@@ -1,0 +1,87 @@
+
+<!--mixin icon(name)-->
+<!--    i.icon-#{name}-->
+<div class="row">
+  <stg-debug-panel></stg-debug-panel>
+</div>
+<div class="row">
+  <cc-breadcrumb></cc-breadcrumb>
+</div>
+<div class="row">
+  <div cg-busy="{promise: view.integrationPromise, templateUrl: &quot;app/views/loader.html&quot;}" class="panel panel-default">
+    <div class="panel-body">
+      <h4 ng-hide="view.success" class="form-heading">{{"Edit integration"|translate}}</h4>
+      <form name="createIntegrationForm" novalidate="novalidate" stg-form="stg-form" form-resource="view.integrationPromise">
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (createIntegrationForm.name.$dirty &amp;&amp; createIntegrationForm.name.$invalid) || (view.validateIntegration &amp;&amp; createIntegrationForm.name.$error.required) || createIntegrationForm.name.$error.name, 'has-feedback': (createIntegrationForm.name.$dirty &amp;&amp; createIntegrationForm.name.$invalid) || (view.validateIntegration &amp;&amp; createIntegrationForm.name.$error.required)}" class="form-group">
+              <label class="control-label">{{'Name'|translate}} <span class="important">*</span></label>
+              <input type="text" name="name" ng-model="view.integration.name" ng-keypress="createIntegrationForm.name.$error.name !== undefined ? createIntegrationForm.name.$error = {} : ''" class="form-control" id="integration-form-name" ng-required="true"/><span ng-if="(createIntegrationForm.$submitted &amp;&amp; createIntegrationForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+              <div id="integration-form-name-validation-message" ng-show="(createIntegrationForm.name.$error.required &amp;&amp; createIntegrationForm.name.$dirty) || (view.validateIntegration &amp;&amp; createIntegrationForm.name.$error.required)">
+                <p translate="Required" class="error"></p>
+              </div>
+              <div id="undefined-validation-message" ng-show="createIntegrationForm.name.$error.name">
+                <p ng-repeat="error in createIntegrationForm.name.$error.name" class="error">{{ error|translate }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (createIntegrationForm.email.$dirty &amp;&amp; createIntegrationForm.email.$invalid &amp;&amp; createIntegrationForm.email.$touched) || (createIntegrationForm.email.$error.required &amp;&amp; createIntegrationForm.email.$touched) || (view.validateIntegration &amp;&amp; createIntegrationForm.email.$error.required), 'has-feedback': (createIntegrationForm.email.$dirty &amp;&amp; createIntegrationForm.email.$invalid) || (view.validateIntegration &amp;&amp; createIntegrationForm.email.$error.required)}" class="form-group">
+              <label ng-class="{'error': (createIntegrationForm.email.$dirty &amp;&amp; createIntegrationForm.email.$invalid) || (view.validateIntegration &amp;&amp; createIntegrationForm.email.$error.required)}" class="control-label">{{'Email'|translate}} <span class="important">*</span></label>
+              <input type="email" name="email" ng-model="view.integration.user.email" ng-keypress="createIntegrationForm.email.$error.email !== undefined ? createIntegrationForm.email.$error = {} : ''" class="form-control" id="integration-form-user-email" ng-required="true" ng-disabled="!$state.includes('integrationCreate')"/>
+              <div ng-if="createIntegrationForm.$error.email &amp;&amp; createIntegrationForm.email.$touched">
+                <p translate="Invalid email address" class="error"></p>
+              </div>
+              <div id="integration-form-user-email-validation-message" ng-show="(createIntegrationForm.email.$error.required &amp;&amp; createIntegrationForm.email.$dirty) || (view.validateIntegration &amp;&amp; createIntegrationForm.email.$error.required)">
+                <p translate="Required" class="error"></p>
+              </div>
+              <div id="undefined-validation-message" ng-show="createIntegrationForm.email.$error.email">
+                <p ng-repeat="error in createIntegrationForm.email.$error.email" class="error">{{ error|translate }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+        <div ng-if="$state.includes('integrationEdit')" class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (createIntegrationForm.id.$dirty &amp;&amp; createIntegrationForm.id.$invalid) || (view.validateIntegration &amp;&amp; createIntegrationForm.id.$error.required) || createIntegrationForm.id.$error.id, 'has-feedback': (createIntegrationForm.id.$dirty &amp;&amp; createIntegrationForm.id.$invalid) || (view.validateIntegration &amp;&amp; createIntegrationForm.id.$error.required)}" class="form-group">
+              <label class="control-label">{{'Client ID'|translate}}</label>
+              <input type="text" name="id" ng-model="view.integration.clientId" ng-keypress="createIntegrationForm.id.$error.id !== undefined ? createIntegrationForm.id.$error = {} : ''" class="form-control" id="integration-form-client-id" disabled="true"/><span ng-if="(createIntegrationForm.$submitted &amp;&amp; createIntegrationForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+              <div id="undefined-validation-message" ng-show="createIntegrationForm.id.$error.id">
+                <p ng-repeat="error in createIntegrationForm.id.$error.id" class="error">{{ error|translate }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+        <div ng-if="$state.includes('integrationEdit')" class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (createIntegrationForm.secret.$dirty &amp;&amp; createIntegrationForm.secret.$invalid) || (view.validateIntegration &amp;&amp; createIntegrationForm.secret.$error.required) || createIntegrationForm.secret.$error.secret, 'has-feedback': (createIntegrationForm.secret.$dirty &amp;&amp; createIntegrationForm.secret.$invalid) || (view.validateIntegration &amp;&amp; createIntegrationForm.secret.$error.required)}" class="form-group">
+              <label class="control-label">{{'Client SECRET'|translate}}</label>
+              <input type="text" name="secret" ng-model="view.integration.clientSecret" ng-keypress="createIntegrationForm.secret.$error.secret !== undefined ? createIntegrationForm.secret.$error = {} : ''" class="form-control" id="integration-form-client-secret" disabled="true"/><span ng-if="(createIntegrationForm.$submitted &amp;&amp; createIntegrationForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+              <div id="undefined-validation-message" ng-show="createIntegrationForm.secret.$error.secret">
+                <p ng-repeat="error in createIntegrationForm.secret.$error.secret" class="error">{{ error|translate }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+      </form>
+      <hr class="divider"/>
+      <div class="form-group">
+        <input type="submit" value="{{'Save'|translate}}" class="btn btn-primary" ng-click="createIntegrationForm.$valid ? view.submitForm(view.integration) : view.validateIntegration = true" ng-disabled="view.showListIntegrationsForm === true" id="user-form-submit-button"/>
+      </div>
+    </div>
+  </div>
+</div>

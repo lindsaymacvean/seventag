@@ -1,0 +1,16 @@
+
+<!--mixin icon(name)-->
+<!--    i.icon-#{name}-->
+<form name="othersSettingsForm" novalidate="novalidate" stg-form="stg-form" form-resource="othersSettings.othersSettingsPromise">
+  <div class="row">
+    <div class="col-lg-4 col-md-12 col-sm-12">
+      <div class="form-group">
+        <label translate="Language" class="control-label"></label>
+        <select ng-model="view.user.language" cc-select="cc-select" ng-options="translation.id as translation.name | translate for translation in othersSettings.languages" cc-select-options="othersSettings.languages" cc-select-value="id" cc-select-label="name" class="form-control"></select>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <!-- Place for help-->
+    </div>
+  </div>
+</form>

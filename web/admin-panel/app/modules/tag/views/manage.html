@@ -1,0 +1,57 @@
+
+<div class="row">
+  <cc-breadcrumb></cc-breadcrumb>
+</div>
+<div class="row">
+  <h2 class="page-header"><i class="icon-tag"></i><strong translate="Tags"></strong>
+    <cc-help placement="right" content="{{'A tag is a snippet of JavaScript that sends information to a third party. You don\'t need to add your tags directly to your website, just specify how and when the tags should fire.'|translate}}"></cc-help>
+    <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() &gt; 0" class="pull-right">
+      <a class="btn btn-primary btn-md stg-link-btn" id="tag-list-create-link" href="href" ui-sref="tagCreate({containerId: activeContainerId})" ng-if="view.permissions.indexOf('edit') !== -1"><span class="plus">+</span><strong translate="Add a tag"></strong>
+      </a>
+    </div>
+  </h2>
+  <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" class="alert alert-info alert-empty">
+    <h2 class="text-center"><strong translate="Your list is empty" translate-values="{ list: ENTITY_NAME.toLowerCase() }"></strong></h2>
+    <p ng-if="(currentContainer.$container.hasPermission('edit'))" class="text-center"><span translate="To add a new click the button below." translate-value="{ object: ENTITY_NAME }"></span></p>
+    <p class="text-center action">
+      <a class="btn btn-primary btn-md stg-link-btn" id="tag-list-create-link" href="href" ui-sref="tagCreate({containerId: activeContainerId})" ng-if="view.permissions.indexOf('edit') !== -1"><span class="plus">+</span><strong translate="Add a tag"></strong>
+      </a>
+    </p>
+  </div>
+  <div id="tag-list" ng-init="view.showMenu = -1; view.showTriggers = -1;" ng-hide="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" class="div-table">
+    <div class="row div-table-header">
+      <div class="sortable col-xs-4"><span translate="Name"></span></div>
+      <div class="sortable col-xs-2"><span translate="Triggers"></span>
+        <cc-help placement="top" content="{{'A list of all the triggers added to a tag.'|translate}}"></cc-help>
+      </div>
+      <div class="sortable col-xs-2"><span translate="Status"></span>
+        <cc-help placement="top" content="{{'Tags with status inactive will be not fired after publication.'|translate}}"></cc-help>
+      </div>
+      <div class="sortable col-xs-2"><span translate="Last edit"></span></div>
+      <div class="sortable col-xs-1"><span translate="Priority"></span></div>
+    </div>
+    <div id="tag-list-row{{ $index }}" ng-repeat="tag in $data" class="row div-table-row">
+      <div id="tag-list-row{{ $index }}-name" sortable="name" class="col-xs-4 div-table-cell ellipsis"><a href="href" ui-sref="tagEdit({containerId: activeContainerId, tagId: tag.id})" title="{{ tag.name }}">{{ tag.name | limitTo : 30 }}{{tag.name.length > 30 ? '...' : ''}}</a></div>
+      <div id="tag-list-row{{ $index }}-triggers" sortable="triggers" class="col-xs-2 div-table-cell"><a href="" ng-click="view.toggleTriggerList($index)"><span>{{tag.triggers.length}}</span></a></div>
+      <div id="tag-list-row{{ $index }}-status" class="col-xs-2 div-table-cell"><a href="" ng-click="view.changeStatus(tag)" id="tag-list-row-{{ $index }}-activate-active" ng-if="!tag.statusChangePending &amp;&amp; tag.isActive" title="{{ 'Active'|translate }}">
+          <div id="tag-list-row-{{ $index }}-status-active" class="tag-status tag-status-active"></div></a><a href="" ng-click="view.changeStatus(tag)" id="tag-list-row-{{ $index }}-activate-inactive" ng-if="!tag.statusChangePending &amp;&amp; !tag.isActive" title="{{ 'Inactive'|translate }}">
+          <div id="tag-list-row-{{ $index }}-status-inctive" class="tag-status tag-status-inactive"></div></a><a href="" id="tag-list-row-{{ $index }}-activate-is-pending" ng-if="tag.statusChangePending" title="{{ 'Pending'|translate }}">
+          <div id="tag-list-row-{{ $index }}-status-inctive" class="tag-status tag-status-pending"></div></a></div>
+      <div id="tag-list-row{{ $index }}-last-edit" class="col-xs-2 div-table-cell ellipsis">{{ tag.updatedAt | tmDate }}</div>
+      <div id="tag-list-row{{ $index }}-priority" class="col-xs-1 div-table-cell">{{ tag.priority }}</div>
+      <div data-title="" id="tag-list-row-{{ $index }}-action" ng-class="{active: view.showMenu === $index , 'disabled': view.permissions.indexOf('edit') === -1}" class="col-xs-1 div-table-cell actions context-menu-actions">
+        <ul ng-if="view.showMenu === $index" class="list-inline">
+          <li><a href="" ui-sref="tagEdit({containerId: activeContainerId, tagId: tag.id})" id="tag-list-row-{{ $index }}-edit"><i class="icon-edit"></i><span translate="Edit"></span></a></li>
+          <li><a href="" cc-confirm="view.removeTag(tag)" id="tag-list-row-{{ $index }}-delete"><i class="icon-delete"></i><span translate="Delete"></span></a></li>
+        </ul><a href="" ng-click="view.toggleActionMenu($index)" class="dots"><i ng-if="view.permissions.indexOf('edit') !== -1" class="icon-dots"></i></a>
+      </div>
+      <ul ng-if="view.showTriggers === $index" class="col-xs-12 tag-manage-triggers-list">
+        <div class="row">
+          <li ng-repeat="trigger in tag.triggers" id="tag-list-row-{{sectionIndex}}-triggers{{$index}}" class="col-md-2 col-sm-6 col-xs-6"><a href="" ui-sref="triggerEdit({containerId: activeContainerId, triggerId: trigger.id})" title="{{ trigger.name }}"><i class="icon-trigger"></i>{{ trigger.name | limitTo : 13 }}{{ trigger.name.length > 13 ? '...' : '' }}</a></li>
+          <li ng-if="tag.triggers.length === 0"><span translate="Please add a trigger to fire this tag"></span></li>
+        </div>
+      </ul>
+    </div>
+  </div>
+  <div ng-include="'st-pagination.html'"></div>
+</div>

@@ -1,0 +1,10 @@
+
+<ul tabindex="-1" ng-show="$isVisible()" role="select" class="select dropdown-menu">
+  <li ng-if="$showAllNoneButtons">
+    <div style="margin-bottom: 5px; margin-left: 5px" class="btn-group">
+      <button type="button" ng-click="$selectAll()" class="btn btn-default btn-xs">{{$allText}}</button>
+      <button type="button" ng-click="$selectNone()" class="btn btn-default btn-xs">{{$noneText}}</button>
+    </div>
+  </li>
+  <li role="presentation" ng-repeat="match in $matches" ng-class="{'active': $isActive($index)}"><a style="cursor: default;" role="menuitem" tabindex="-1" ng-click="$select($index, $event)"><i ng-if="$isMultiple &amp;&amp; $isActive($index)" class="{{$iconCheckmark}} pull-right"></i><span ng-bind="match.label"></span></a></li>
+</ul>

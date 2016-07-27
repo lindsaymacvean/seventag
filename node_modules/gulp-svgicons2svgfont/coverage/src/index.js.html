@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/index.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">src/index.js</span></h1>
+    <h2>
+        Statements: <span class="metric">96.25% <small>(77 / 80)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">97.06% <small>(33 / 34)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">85.71% <small>(12 / 14)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">96.15% <small>(75 / 78)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">src/</a> &#187; index.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-yes">26</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-yes">166</span>
+<span class="cline-any cline-yes">166</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">166</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">164</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">74</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">136</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-yes">54</span>
+<span class="cline-any cline-yes">54</span>
+<span class="cline-any cline-yes">54</span>
+<span class="cline-any cline-yes">54</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">106</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+var svgicons2svgfont = require('svgicons2svgfont');
+var gutil = require('gulp-util');
+var Stream = require('readable-stream');
+var path = require('path');
+var plexer = require('plexer');
+var fileSorter = require('svgicons2svgfont/src/filesorter');
+&nbsp;
+module.exports = function(options) {
+  var filesBuffer = [];
+  var metadataProvider;
+  var inputStream = new Stream.Transform({ objectMode: true });
+  var outputStream = new Stream.PassThrough({ objectMode: true });
+  var stream = plexer({ objectMode: true }, inputStream, outputStream);
+  var fontStream;
+&nbsp;
+  options = options || {};
+  options.ignoreExt = options.ignoreExt || false;
+  options.startUnicode = options.startUnicode || 0xEA01;
+  options.appendUnicode = !!options.appendUnicode;
+&nbsp;
+  if(!options.fontName) {
+    throw new gutil.PluginError('svgicons2svgfont', 'Missing options.fontName');
+  }
+&nbsp;
+  options.log = options.log || function() {
+    gutil.log.apply(gutil, ['gulp-svgicons2svgfont:'].concat(
+      [].slice.call(arguments, 0).concat()));
+  };
+&nbsp;
+  // Emit event containing codepoint mapping
+  options.callback = function(glyphs) {
+    stream.emit('glyphs', glyphs.map(function(glyph) {
+      return {
+        name: glyph.name,
+        unicode: glyph.unicode,
+      };
+    }));
+  };
+&nbsp;
+  options.error = options.error || <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >    stream.emit('error', new gutil.PluginError('svgicons2svgfont',</span>
+      [].slice.call(arguments, 0).concat()));
+  };
+&nbsp;
+  metadataProvider = options.metadataProvider || require('svgicons2svgfont/src/metadata')({
+    startUnicode: options.startUnicode,
+    appendUnicode: options.appendUnicode,
+  });
+&nbsp;
+  inputStream._transform = function _gulpSVGIcons2SVGFontTransform(file, unused, done) {
+    var fontFile = null;
+    var buf = null;
+&nbsp;
+    // When null just pass through
+    if(file.isNull()) {
+      outputStream.write(file); done();
+      return;
+    }
+&nbsp;
+    // If the ext doesn't match, pass it through
+    if((!options.ignoreExt) &amp;&amp; '.svg' !== path.extname(file.path)) {
+      outputStream.write(file); done();
+      return;
+    }
+&nbsp;
+    if(0 === filesBuffer.length) {
+      // Generating the font
+      fontStream = svgicons2svgfont(options);
+      fontStream.on('error', <span class="fstat-no" title="function not covered" >function(err) {</span>
+<span class="cstat-no" title="statement not covered" >        outputStream.emit('error', err);</span>
+      });
+      // Create the font file
+      fontFile = new gutil.File({
+        cwd: file.cwd,
+        base: file.base,
+        path: path.join(file.base, options.fileName || options.fontName) + '.svg',
+      });
+&nbsp;
+      // Giving the font back to the stream
+      if(file.isBuffer()) {
+        buf = new Buffer(''); // use let when going to es6
+        fontStream.on('data', function(chunk) {
+          buf = Buffer.concat([buf, chunk], buf.length + chunk.length);
+        });
+        fontStream.on('end', function() {
+          fontFile.contents = buf;
+          outputStream.push(fontFile);
+          outputStream.end();
+        });
+      } else {
+        fontFile.contents = fontStream;
+        outputStream.push(fontFile);
+        outputStream.end();
+      }
+    }
+&nbsp;
+    // Otherwise buffer the files
+    filesBuffer.push(file);
+&nbsp;
+    done();
+  };
+&nbsp;
+  inputStream._flush = function _gulpSVGIcons2SVGFontFlush(done) {
+    if(!filesBuffer.length) {
+      outputStream.end();
+      return done();
+    }
+&nbsp;
+    // Sorting files
+    filesBuffer = filesBuffer.sort(function(fileA, fileB) {
+      return fileSorter(fileA.path, fileB.path);
+    });
+&nbsp;
+    // Wrap icons for the underlying lib
+    filesBuffer.forEach(function(file) {
+      var iconStream;
+&nbsp;
+      if(file.isBuffer()) {
+        iconStream = new Stream.PassThrough();
+        setImmediate(function() {
+          iconStream.write(file.contents);
+          iconStream.end();
+        });
+      } else {
+        iconStream = file.contents;
+      }
+      metadataProvider(file.path, function(err, theMetadata) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if(err) {
+<span class="cstat-no" title="statement not covered" >          fontStream.emit('error', err);</span>
+        }
+        iconStream.metadata = theMetadata;
+&nbsp;
+        fontStream.write(iconStream);
+        filesBuffer.splice(filesBuffer.indexOf(file), 1);
+        if(0 === filesBuffer.length) {
+          fontStream.end();
+        }
+      });
+    });
+&nbsp;
+    done();
+  };
+&nbsp;
+  return stream;
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Sep 12 2015 09:17:06 GMT+0200 (CEST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

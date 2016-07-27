@@ -1,0 +1,5 @@
+
+<ol id="breadcrumbs-navigation" ng-if="!$state.includes('container')" class="breadcrumb">
+  <li id="breadcrumbs-home" ng-if="!$state.includes('container')"><a href="href" ui-sref="container" ng-show="breadcrumbCtrl.breadcrumb.length"><i class="icon-home"></i></a><a ng-hide="breadcrumbCtrl.breadcrumb.length" class="active"> Loading ...</a></li>
+  <li ng-repeat="breadcrumb in breadcrumbCtrl.breadcrumb" ng-class="{'breadcrumb-bold': !$last}"><a title="{{ breadcrumb.name }}" ng-click="breadcrumb.state !== undefined ? breadcrumbCtrl.stateGo(breadcrumb) : ''" class="active">{{ breadcrumb.name | limitTo : 30 }}{{breadcrumb.name.length > 30 ? '...' : ''}}</a></li>
+</ol>

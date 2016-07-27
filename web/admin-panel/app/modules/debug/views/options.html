@@ -1,0 +1,53 @@
+
+<!--mixin icon(name)-->
+<!--    i.icon-#{name}-->
+<div class="row">
+  <cc-breadcrumb ng-hide="view.success"></cc-breadcrumb>
+</div>
+<div class="row">
+  <div cg-busy="{promise: view.containerPromise, templateUrl: &quot;app/views/loader.html&quot;}" class="panel panel-default">
+    <div class="panel-body">
+      <h4 ng-hide="view.success" class="form-heading">{{"Websites with installed container"|translate}}
+        <cc-help placement="right" content="{{'Please enter URLs of your website(s), on which you implemented the container. You can also select the way in which the debug URL parameter is appended - through hash or as parameter.'|translate}}"></cc-help>
+      </h4>
+      <!--mixin icon(name)-->
+      <!--    i.icon-#{name}-->
+            <form name="editContainerWebsitesForm" novalidate="novalidate" ng-controller="clearcode.tm.debug.WebsitesController as websitesCtrl" ng-init="websitesCtrl.validateContainer = false">
+              <div class="form-group">
+                      <a class="btn btn-default btn-md" id="webite-add-button" ng-click="websitesCtrl.addContainerWebsite()" ng-if="!websitesCtrl.websites || websitesCtrl.websites.length === 0" ng-disabled="!currentContainer.$container.hasPermission('edit')" translate="Add a website(s)">
+                      </a>
+              </div>
+              <div ng-repeat="website in websitesCtrl.websites" ng-class="{'has-error': editContainerWebsitesForm['websiteValue[{{$index}}]'].$invalid &amp;&amp; ( editContainerWebsitesForm['websiteValue[{{$index}}]'].$dirty || websitesCtrl.validateContainer ) }" class="form-inline bottom-space">
+                <div class="row">
+                  <div class="form-group col-sm-5">
+                    <input type="url" style="width: 100%" ng-model="website.url" name="websiteValue[{{$index}}]" id="website-form-{{$index}}-input-value" required="required" ng-disabled="!currentContainer.$container.hasPermission('edit')" class="form-control"/>
+                  </div>
+                  <div class="form-group">
+                    <select ng-model="website.parameterType" cc-select="cc-select" ng-options="parType.id as parType.name for parType in websitesCtrl.parameterTypes" cc-select-options="websitesCtrl.parameterTypes" cc-select-value="value" cc-select-label="name" class="form-control websites-parameter-type"></select>
+                  </div>
+                  <div class="form-group">
+                          <a class="btn btn-default btn-md" ng-href="{{ getWebsiteUrlWithParameter(website) }}" target="_blank" id="website-form-{{$index}}-debug-button" ng-disabled="!getWebsiteUrlWithParameter(website)"><span translate="Debug"></span>
+                          </a>
+                  </div>
+                  <div class="form-group">
+                    <button ng-click="websitesCtrl.removeContainerWebsite($index)" id="website-form-{{$index}}-remove-button" ng-if="currentContainer.$container.hasPermission('edit')" class="btn btn-default btn-action">-</button>
+                  </div>
+                  <div class="form-group">
+                    <button ng-show="$last" ng-click="websitesCtrl.addContainerWebsite()" id="website-form-{{$index}}-add-button" ng-if="currentContainer.$container.hasPermission('edit')" class="btn btn-default btn-action">+</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div ng-show="editContainerWebsitesForm['websiteValue[{{$index}}]'].$invalid &amp;&amp; ( editContainerWebsitesForm['websiteValue[{{$index}}]'].$dirty || websitesCtrl.validateContainer )" class="col-lg-8">
+                    <p translate="Valid website address is required" class="error"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-inline">
+                <div class="form-group">
+                        <input type="submit" value="{{&quot;Save&quot;|translate}}" class="btn btn-primary" id="website-form-submit-button" ng-click="editContainerWebsitesForm.$valid ? websitesCtrl.submitForm(websitesCtrl.container) : websitesCtrl.validateContainer = true" ng-disabled="!currentContainer.$container.hasPermission('edit')"/>
+                </div>
+              </div>
+            </form>
+    </div>
+  </div>
+</div>

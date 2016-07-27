@@ -1,0 +1,1 @@
+!function(e){var n=new e;n.bootstrap()}(window.sevenTag.$injector.get("SevenTag"));

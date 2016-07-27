@@ -1,0 +1,32 @@
+<div id="event-details-container" class="animated fadeIn">
+    <div id="event-log-breadcrumb">
+    <ul>
+        <li>
+            <a href ui-sref="events-log.list">
+                <i class="icon-arrow-left"></i>
+                <span class="event-log-breadcrumb-label">{{ view.summary.dataLayerElement.event }}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+    <section id="event-details">
+        <div id="event-tabs">
+    <ul>
+        <li ng-class="{active: $state.includes('events-log.details.related-tags')}">
+            <a href ui-sref="events-log.details.related-tags.list({eventId: view.eventId})">Related tags</a>
+        </li>
+        <li ng-class="{active: $state.includes('events-log.details.data-layer')}">
+            <a href ui-sref="events-log.details.data-layer({eventId: view.eventId})">Data layer</a>
+        </li>
+        <li ng-class="{active: $state.includes('events-log.details.variables')}">
+            <a href ui-sref="events-log.details.variables({eventId: view.eventId})">Variables</a>
+        </li>
+    </ul>
+</div>
+
+        <div ui-view></div>
+    </section>
+</div>
+
+

@@ -1,0 +1,424 @@
+
+<!--mixin icon(name)-->
+<!--    i.icon-#{name}-->
+<div class="row">
+  <cc-breadcrumb ng-hide="view.success"></cc-breadcrumb>
+</div>
+<div class="row">
+  <div cg-busy="{promise: view.tagPromise, templateUrl: &quot;app/views/loader.html&quot;}" class="panel panel-default">
+    <div class="panel-body">
+      <h4 ng-hide="view.success" class="form-heading">{{"Add a new tag"|translate}}</h4>
+      <form name="tagForm" novalidate="novalidate" stg-form="stg-form" form-resource="view.tagPromise">
+        <div ng-init="view.showTriggerForm = false; view.validateTag = false; view.validateTriggers = false; view.triggerId = false; view.editTriggerForm = false;">
+          <div class="stepper-step">
+            <div class="stepper-index"><span>1</span></div>
+            <div>
+              <div ng-class="{'has-error': (tagForm.name.$dirty &amp;&amp; tagForm.name.$invalid) || (view.validateTag &amp;&amp; tagForm.name.$error.required) || tagForm.name.$error.name, 'has-feedback': (tagForm.name.$dirty &amp;&amp; tagForm.name.$invalid) || (view.validateTag &amp;&amp; tagForm.name.$error.required)}" class="form-group">
+                <label class="control-label">{{'Tag name'|translate}} <span class="important">*</span></label>
+                <input type="text" name="name" ng-model="view.tag.name" ng-keypress="tagForm.name.$error.name !== undefined ? tagForm.name.$error = {} : ''" class="form-control" id="tag-form-name" ng-required="true" placeholder="{{'Name your tag'|translate}}" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span ng-if="(tagForm.$submitted &amp;&amp; tagForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                <div id="tag-form-name-validation-message" ng-show="(tagForm.name.$error.required &amp;&amp; tagForm.name.$dirty) || (view.validateTag &amp;&amp; tagForm.name.$error.required)">
+                  <p translate="Required" class="error"></p>
+                </div>
+                <div id="undefined-validation-message" ng-show="tagForm.name.$error.name">
+                  <p ng-repeat="error in tagForm.name.$error.name" class="error">{{ error|translate }}</p>
+                </div>
+              </div>
+              <div ng-if="view.tag.template !== undefined" class="form-group">
+                <label translate="Choose template" ng-if="view.tag.template === null" class="control-label"></label>
+                <label translate="Chosen tag template" ng-if="view.tag.template !== null" class="control-label"></label>
+                <cc-help placement="right" content="{{'This functionality allows you avoid creating tags manually for well-known tags types like Piwik, Google Adwords etc. Custom tag templates engine just replace values from form and pass them to appropriate places in tag templates code.'|translate}}"></cc-help>
+                <div class="form-group noselect">
+                  <div class="row stg-tag-templates">
+                    <div ng-repeat="template in view.templates" ng-if="(!view.formTouched &amp;&amp; !view.template.types.length) || view.tag.template === template.id" class="col-md-4 col-sm-6 col">
+                      <div ng-click="!currentContainer.$container.hasPermission('edit') || view.setTagTemplate(template.id); view.validateTag = false;" ng-class="{'active' : !view.formTouched &amp;&amp; !view.template.types.length || view.tag.template === template.id }" id="tag-template-{{ template.id }}" class="stg-tag-template"><img ng-src="{{ template.brandUrl }}" ng-cloak="ng-cloak"/></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div ng-if="!view.tag.template" class="form-group">
+                <label translate="or add custom tag" ng-if="view.tag.template === null" class="control-label"></label>
+                <label translate="Chosen tag template" ng-if="view.tag.template !== null" class="control-label"></label>
+                <div class="form-group noselect">
+                  <div class="row stg-tag-templates">
+                    <div class="col-md-4">
+                      <div ng-click="!currentContainer.$container.hasPermission('edit') || view.setTagTemplate(); view.validateTag = false;" ng-class="{'active' : !view.formTouched &amp;&amp; !view.template.types.length || view.tag.template === undefined }" translate="Custom HTML tag" class="stg-tag-template stg-tag-template-btn"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-if="view.template.types.length">
+              <hr class="divider"/>
+              <div class="form-group">
+                <div class="row stg-tag-templates">
+                  <div ng-repeat="type in view.template.types" id="template-view-{{ $index }}" class="col-lg-4">
+                    <div ng-click="!currentContainer.$container.hasPermission('edit') || view.setTemplateType(view.template.id, type.id); view.validateTag = false;" ng-class="{'active' : !view.formTouched || view.tag.templateOptions.type === type.id }" class="stg-tag-template stg-tag-template-btn">{{ type.name|translate }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ng-if="view.formTouched" class="stepper-step">
+            <div class="stepper-index"><span>2</span></div>
+            <div ng-if="view.template.templateUrl &amp;&amp; view.tag.template !== undefined">
+              <div ng-include="view.template.templateUrl"></div>
+            </div>
+            <div ng-if="view.tag.template !== undefined">
+              <div ng-repeat="field in view.templateFields" class="row">
+                <div ng-class="{'hidden' : field.type === 'hidden'}" class="col-md-12 col-sm-12 {{ field.roles.hasOwnProperty('column') ? 'col-lg-' + field.roles.column : 'col-lg-12' }}">
+                  <div ng-class="{ 'has-error': tagForm[field.name].$dirty &amp;&amp; tagForm[field.name].$invalid || view.validateTag &amp;&amp; tagForm[field.name].$error.required}" id="conversion-label-{{ $index }}" class="form-group">
+                    <label class="control-label">{{ field.label }}<span ng-if="field.roles.required" class="important"> *</span></label>
+                    <cc-help ng-if="field.helper" placement="right" content="{{ field.helper }}"></cc-help>
+                    <input ng-if="field.type == 'text' || field.type == 'hidden'" type="{{ field.type }}" name="{{ field.name }}" ng-model="view.tag.templateOptions[field.name]" ng-required="field.roles.required &amp;&amp; view.tag.template" placeholder="{{ field.placeholder }}" variable-selector="variable-selector" variable-click-outside="variable-click-outside" class="form-control"/>
+                    <select ng-if="field.type == 'select'" ng-model="view.tag.templateOptions[field.name]" cc-select="cc-select" ng-options="value.id as value.name for value in field.values" cc-select-options="field.values" cc-select-value="id" cc-select-label="name" class="form-control"></select>
+                    <div ng-show="tagForm[field.name].$dirty &amp;&amp; tagForm[field.name].$invalid || view.validateTag &amp;&amp; tagForm[field.name].$error.required">
+                      <p translate="Required" class="error"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-if="view.tag.template === undefined">
+              <div ng-class="{'has-error': (tagForm.code.$dirty &amp;&amp; tagForm.code.$invalid) || (view.validateTag &amp;&amp; tagForm.code.$error.required)}" class="form-group">
+                <label class="control-label">{{'Tag HTML'|translate}}<span class="important">*</span>
+                  <cc-help placement="right" content="{{'Paste your tag’s HTML code (snippet) here. You don’t need to put it directly into your website’s code anymore. Just set it here.'|translate}}"></cc-help>
+                </label>
+                <div ng-class="{ 'code-editor-focused' : view.isCodeEditorFocused, 'has-variables' : view.hasVariables() }" class="container-fluid tag-editor-panel">
+                  <div class="row">
+                    <div ng-class="{ 'col-sm-8' : view.hasVariables(), 'col-sm-12' : !view.hasVariables() }" class="tag-editor-panel-editor">
+                      <textarea id="tag-form-html" name="code" placeholder="{{&quot;Place the code&quot;|translate}}" ng-required="true &amp;&amp; view.tag.template === undefined" ng-disabled="!currentContainer.$container.hasPermission('edit')" ng-model="view.tag.code" ui-refresh="true" ui-codemirror="ui-codemirror" ui-codemirror-opts="TextEditorConfig.getConfig(view.textEditorConfig)" class="form-control"></textarea>
+                    </div>
+                    <div ng-if="view.hasVariables()" class="col-sm-4 tag-editor-panel-variables-list">
+                      <label class="control-label">{{'Variables'|translate}}<i ng-init="active = false" ng-mouseenter="active = true" ng-mouseleave="active = false" ng-class="{ 'icon-info-fill': active, 'icon-info-circle': !active }" tooltip-append-to-body="true" tooltip-placement="left" tooltip-html-unsafe="{{'You can use previously defined variables in the tag code. Simply choose one from the list.'|translate}}" tooltip-class="help-tooltip-wrapper" class="help-tooltip"></i></label>
+                      <ul class="list-inline">
+                        <li ng-repeat="variable in view.variables" id="code-variable-list-row-{{ variable.id }}-name" ng-click="insertVariableIntoCode(variable)" class="label-list"><span title="{{ variable.name }}" class="label label-default text-left link">{{ variable.name | limitTo : 30 }}{{variable.name.length > 30 ? '...' : ''}}</span></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div id="undefined-validation-message" ng-show="(tagForm.code.$error.required &amp;&amp; tagForm.code.$dirty) || (view.validateTag &amp;&amp; tagForm.code.$error.required)">
+                  <p translate="Required" class="error"></p>
+                </div>
+              </div>
+            </div>
+            <div ng-if="view.tag.template === undefined" class="single-checkbox">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" cc-checkbox="cc-checkbox" ng-disabled="!currentContainer.$container.hasPermission('edit')" name="view.tag.documentWrite" ng-model="view.tag.documentWrite" id="tag-form-documentWrite"/>{{'Enable document.write'|translate}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ng-if="view.formTouched" ng-init="view.advancedSettings = false" ng-class="{'stepper-step-disabled' : !view.advancedSettings}" class="stepper-step">
+            <div ng-click="view.advancedSettings = !view.advancedSettings" ng-class="{'stepper-step-active': view.advancedSettings}" class="stepper-index stepper-step-advanced noselect"><i ng-class="{'rotate' : view.advancedSettings}" class="icon-arrow-down"></i></div>
+            <div class="form-group">
+              <label translate="Advanced settings" ng-click="view.advancedSettings = !view.advancedSettings" class="stepper-step-advanced-label control-label"></label>
+              <div ng-show="view.advancedSettings">
+                <div ng-class="{'has-error': (tagForm.priority.$dirty &amp;&amp; tagForm.priority.$invalid) || (view.validateTag &amp;&amp; tagForm.priority.$error.required) || tagForm.priority.$error.priority, 'has-feedback': (tagForm.priority.$dirty &amp;&amp; tagForm.priority.$invalid) || (view.validateTag &amp;&amp; tagForm.priority.$error.required)}" class="form-group">
+                  <label class="control-label">{{"Priority"|translate}}</label>
+                  <cc-help placement="right" content="{{'Set priority if you want to fire tags in a specific order. By default, tags are fired in any order.'|translate}}&lt;br&gt;{{'Please note – The bigger the value, the higher the priority. Tags are always fired asynchronously.'|translate}}"></cc-help>
+                  <input type="number" name="priority" ng-model="view.tag.priority" ng-keypress="tagForm.priority.$error.priority !== undefined ? tagForm.priority.$error = {} : ''" class="form-control" id="tag-form-priority" min="0" ng-required="true" placeholder="{{'Set priority'|translate}}" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span ng-if="(tagForm.$submitted &amp;&amp; tagForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                  <div id="tag-form-priority-validation-message" ng-show="(tagForm.priority.$error.required &amp;&amp; tagForm.priority.$dirty) || (view.validateTag &amp;&amp; tagForm.priority.$error.required)">
+                    <p translate="Required" class="error"></p>
+                  </div>
+                  <div id="tag-form-priority-validation-message" ng-show="(tagForm.priority.$error.number &amp;&amp; tagForm.priority.$dirty) || (view.validateTag &amp;&amp; tagForm.priority.$error.number)">
+                    <p translate="Invalid value. Please enter a number." class="error"></p>
+                  </div>
+                  <div id="tag-form-priority-validation-message" ng-show="(tagForm.priority.$viewValue &lt; 0)">
+                    <p translate="Invalid value. Please enter a positive number." class="error"></p>
+                  </div>
+                  <div id="undefined-validation-message" ng-show="tagForm.priority.$error.priority">
+                    <p ng-repeat="error in tagForm.priority.$error.priority" class="error">{{ error|translate }}</p>
+                  </div>
+                </div>
+                <div ng-class="{'has-error': (tagForm.noScriptUri.$dirty &amp;&amp; tagForm.noScriptUri.$invalid) || (view.validateTag &amp;&amp; tagForm.noScriptUri.$error.required) || tagForm.noScriptUri.$error.noScriptUri, 'has-feedback': (tagForm.noScriptUri.$dirty &amp;&amp; tagForm.noScriptUri.$invalid) || (view.validateTag &amp;&amp; tagForm.noScriptUri.$error.required)}" class="form-group">
+                  <label class="control-label">{{'NoScript URI'|translate}}</label>
+                  <cc-help placement="right" content="{{'URI that should be used on page view event if NoScript is enabled'|translate}}"></cc-help>
+                  <input type="text" name="noScriptUri" ng-model="view.tag.noScriptUri" ng-keypress="tagForm.noScriptUri.$error.noScriptUri !== undefined ? tagForm.noScriptUri.$error = {} : ''" class="form-control" id="tag-form-no-script-uri" placeholder="{{'Add URI for NoScript tags'|translate}}" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span ng-if="(tagForm.$submitted &amp;&amp; tagForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                  <div id="undefined-validation-message" ng-show="tagForm.noScriptUri.$error.noScriptUri">
+                    <p ng-repeat="error in tagForm.noScriptUri.$error.noScriptUri" class="error">{{ error|translate }}</p>
+                  </div>
+                </div>
+                <div class="single-checkbox">
+                  <div class="form-group">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" cc-checkbox="cc-checkbox" ng-disabled="!currentContainer.$container.hasPermission('edit')" name="view.tag.isActive" ng-model="view.tag.isActive" id="tag-form-deactivate"/>{{'Activate tag'|translate}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="single-checkbox">
+                  <div class="form-group">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" cc-checkbox="cc-checkbox" ng-disabled="!currentContainer.$container.hasPermission('edit')" name="view.tag.disableInDebugMode" ng-model="view.tag.disableInDebugMode" id="tag-form-disableInDebugMode"/>{{'Do not fire in a debug mode'|translate}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="single-checkbox">
+                  <div class="form-group">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" cc-checkbox="cc-checkbox" ng-disabled="!currentContainer.$container.hasPermission('edit')" name="view.tag.respectVisitorsPrivacy" ng-model="view.tag.respectVisitorsPrivacy" id="tag-form-respectVisitorsPrivacy"/>{{'Respect visitors privacy'|translate}}
+                      </label>
+                      <cc-help placement="right" content="{{'Mark this checkbox if you want to respect your visitors` privacy preferences either expressed by:'|translate}} &lt;br&gt; {{'&amp;bullet; Selecting the Do Not Track option in their web browser.'|translate}} &lt;br&gt; {{'And/or'|translate}} &lt;br&gt; {{'&amp;bullet; Explicitly opting out from being tracked. Go to Options &amp;rarr; Privacy to learn more about the opt-out feature.'|translate}}"></cc-help>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div ng-init="view.showTriggerForm = false; view.validateTag = false; view.validateTriggers = false; view.triggerId = false; view.editTriggerForm = false;">
+        <div ng-if="view.formTouched" class="stepper-step">
+          <div class="stepper-index"><span>3</span></div>
+          <div class="form-group">
+            <label translate="Fires on"></label>
+            <cc-help placement="right" content="{{'Choose or create a new trigger(s) to specify how and when you want to fire the tag.'|translate}}"></cc-help>
+          </div>
+          <div ng-if="view.showTriggerForm" ng-controller="clearcode.tm.trigger.CreateController as triggerForm" class="stepper-subform">
+            <form name="createTriggerForm" novalidate="novalidate" stg-form="stg-form" form-resource="triggerForm.triggerPromise">
+              <div class="stepper-step">
+                <div class="stepper-index"><span>1</span></div>
+                <div class="row">
+                  <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div ng-class="{'has-error': (createTriggerForm.name.$dirty &amp;&amp; createTriggerForm.name.$invalid) || (view.validateTriggers &amp;&amp; createTriggerForm.name.$error.required) || createTriggerForm.name.$error.name, 'has-feedback': (createTriggerForm.name.$dirty &amp;&amp; createTriggerForm.name.$invalid) || (view.validateTriggers &amp;&amp; createTriggerForm.name.$error.required)}" class="form-group">
+                      <label class="control-label">{{'Trigger name'|translate}} <span class="important">*</span></label>
+                      <input type="text" name="name" ng-model="triggerForm.trigger.name" ng-keypress="createTriggerForm.name.$error.name !== undefined ? createTriggerForm.name.$error = {} : ''" class="form-control" id="trigger-form-name" ng-required="true" placeholder="{{'Name your trigger'|translate}}" ng-init="view.conditionLength = 0" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span ng-if="(tagForm.$submitted &amp;&amp; tagForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                      <div id="trigger-form-name-validation-message" ng-show="(createTriggerForm.name.$error.required &amp;&amp; createTriggerForm.name.$dirty) || (view.validateTriggers &amp;&amp; createTriggerForm.name.$error.required)">
+                        <p translate="Required" class="error"></p>
+                      </div>
+                      <div id="undefined-validation-message" ng-show="createTriggerForm.name.$error.name">
+                        <p ng-repeat="error in createTriggerForm.name.$error.name" class="error">{{ error|translate }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <!-- Place for help-->
+                  </div>
+                </div>
+              </div>
+              <div class="stepper-step">
+                <div class="stepper-index"><span>2</span></div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label translate="Loads on" class="control-label"></label>
+                      <cc-help placement="right" content="{{'Choose or create a new trigger(s) to specify how and when you want to fire the tag.'|translate}}&lt;br /&gt;{{'- Page view - fire the tag when the page loads according to the set conditions.'|translate}}&lt;br /&gt;{{'- Click - fire the tag when a user clicks on a page according to the set conditions.'|translate}}&lt;br /&gt;{{'- Event - fire the tag on a specific event(s) according to the set conditions.'|translate}}&lt;br /&gt;{{'- Form submission - fire the tag when a user submits a form according to the set conditions.'|translate}}"></cc-help>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div role="group" class="btn-group"><a id="trigger-form-{{$index}}-type" ng-repeat="type in triggerForm.typesArray" ng-class="{'active' : triggerForm.trigger.type === $index}" ng-click="currentContainer.$container.hasPermission('edit') ? triggerForm.setType($index) : ''; view.validateTriggers = false;" ng-disabled="!currentContainer.$container.hasPermission('edit')" class="btn btn-default">{{ type|translate }}</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="stepper-step">
+                <div class="stepper-index"><span>3</span></div>
+                <div class="form-group">
+                  <label class="control-label"><span translate="Conditions"></span>
+                    <cc-help placement="right" content="{{'Add a condition(s) for firing your tag(s). You can add extra rules like firing on certain pages, clicking on a defined element, and many more.'|translate}}"></cc-help>
+                  </label>
+                  <div ng-switch="triggerForm.trigger.type" ng-show="triggerForm.trigger.conditions.length === 0" ng-init="view.validateTriggers = false;" class="form-group">
+                    <div class="form-group">
+                      <label translate="Fire tag on all pages" ng-switch-when="0" style="color:#2e9354" class="control-label"></label>
+                      <label translate="Fire tag on all clicks" ng-switch-when="1" style="color:#2e9354" class="control-label"></label>
+                      <label translate="Fire tag on all sending forms" ng-switch-when="3" style="color:#2e9354" class="control-label"></label>
+                      <label translate="or" ng-if="currentContainer.$container.hasPermission('edit')" class="control-label"></label>
+                          <a class="btn btn-default btn-md" translate="Add a condition(s)" ng-click="triggerForm.addCondition()" ng-if="currentContainer.$container.hasPermission('edit')" id="condition-add-button">
+                          </a>
+                    </div>
+                  </div>
+                  <div ng-repeat="condition in triggerForm.trigger.conditions" ng-class="{'has-error': (createTriggerForm['conditionValue[{{$index}}]'].$dirty &amp;&amp; createTriggerForm['conditionValue[{{$index}}]'].$invalid) || (createTriggerForm['conditionValue[{{$index}}]'].$invalid &amp;&amp; view.validateTriggers)}" ng-init="view.conditionLength = triggerForm.trigger.conditions.length" class="form-inline bottom-space stg-condition">
+                    <div class="form-group">
+                      <div class="width-180">
+                        <select ng-model="condition.variable" cc-select="cc-select" ng-options="variable.type as variable.name for variable in triggerForm.variables" id="condition-form-{{$index}}-select-variable" ng-click="setActions(condition.variable)" cc-select-options="triggerForm.variables" cc-select-value="name" cc-select-label="name" ng-if="!triggerForm.isTypeRequired(condition.variable) &amp;&amp; currentContainer.$container.hasPermission('edit')" class="form-control"></select>
+                        <div ng-if="triggerForm.isTypeRequired(condition.variable) || !currentContainer.$container.hasPermission('edit')" class="control-label required-variable">{{ triggerForm.getVariableName(condition.variable) }}</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="width-180">
+                        <select ng-model="condition.condition" cc-select="cc-select" ng-options="condition.type as condition.name for condition in triggerForm.actions" id="condition-form-{{$index}}-select-condition" cc-select-options="triggerForm.actions" cc-select-value="type" cc-select-label="name" ng-if="currentContainer.$container.hasPermission('edit')" class="form-control"></select>
+                        <div ng-if="!currentContainer.$container.hasPermission('edit')" class="control-label required-variable">{{ triggerForm.getConditionName(condition.condition) }}</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <input ng-model="condition.value" name="conditionValue[{{$index}}]" id="condition-form-{{$index}}-input-value" required="required" ng-disabled="!currentContainer.$container.hasPermission('edit')" class="form-control width-180"/>
+                    </div>
+                    <div class="form-group">
+                      <button ng-click="view.conditionLength = view.conditionLength-1; triggerForm.trigger.removeCondition($index);" id="condition-form-{{$index}}-remove-button" ng-if="!triggerForm.isTypeRequired(condition.variable) &amp;&amp; currentContainer.$container.hasPermission('edit')" class="btn btn-default btn-action">-</button>
+                    </div>
+                    <div class="form-group">
+                      <button ng-show="$last" ng-click="triggerForm.addCondition()" id="condition-form-{{$index}}-add-button" ng-if="currentContainer.$container.hasPermission('edit')" class="btn btn-default btn-action">+</button>
+                    </div>
+                    <div class="row">
+                      <div ng-show="(createTriggerForm['conditionValue[{{$index}}]'].$invalid &amp;&amp; createTriggerForm['conditionValue[{{$index}}]'].$dirty) || (createTriggerForm['conditionValue[{{$index}}]'].$invalid &amp;&amp; view.validateTriggers)" class="col-lg-8">
+                        <p translate="Required" class="error"></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                    <a class="btn btn-primary btn-md" id="trigger-form-add-related-tag-button" translate="Add" ng-click="triggerForm.validateTrigger(createTriggerForm) ? triggerForm.addTrigger(createTriggerForm, triggerForm.trigger) : triggerForm.displayInvalidFormMessage(view)">
+                    </a>
+                    <a class="btn btn-default btn-md" id="trigger-form-cancel-button" translate="Cancel" ng-click="view.showTriggerForm = triggerForm.leaveFormInsideTag()">
+                    </a>
+              </div>
+            </form>
+          </div>
+          <div ng-if="view.editTriggerForm" ng-init="triggerForm.initTrigger(view.triggerId)" ng-controller="clearcode.tm.trigger.EditInsideTagController as triggerForm" cg-busy="{promise:triggerForm.triggerPromise, message:'Loading', backdrop:true, delay:0, minDuration:0}" class="stepper-subform">
+            <form name="editTriggerForm" novalidate="novalidate" stg-form="stg-form" form-resource="triggerForm.editTriggerPromise">
+              <div class="stepper-step">
+                <div class="stepper-index"><span>1</span></div>
+                <div class="row">
+                  <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div ng-class="{'has-error': (editTriggerForm.name.$dirty &amp;&amp; editTriggerForm.name.$invalid) || (view.validateTriggers &amp;&amp; editTriggerForm.name.$error.required) || editTriggerForm.name.$error.name, 'has-feedback': (editTriggerForm.name.$dirty &amp;&amp; editTriggerForm.name.$invalid) || (view.validateTriggers &amp;&amp; editTriggerForm.name.$error.required)}" class="form-group">
+                      <label class="control-label">{{'Trigger name'|translate}} <span class="important">*</span></label>
+                      <input type="text" name="name" ng-model="triggerForm.trigger.name" ng-keypress="editTriggerForm.name.$error.name !== undefined ? editTriggerForm.name.$error = {} : ''" class="form-control" id="trigger-form-name" ng-required="true" placeholder="{{'Name your trigger'|translate}}" ng-init="view.conditionLength = 0" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span ng-if="(tagForm.$submitted &amp;&amp; tagForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                      <div id="trigger-form-name-validation-message" ng-show="(editTriggerForm.name.$error.required &amp;&amp; editTriggerForm.name.$dirty) || (view.validateTriggers &amp;&amp; editTriggerForm.name.$error.required)">
+                        <p translate="Required" class="error"></p>
+                      </div>
+                      <div id="undefined-validation-message" ng-show="editTriggerForm.name.$error.name">
+                        <p ng-repeat="error in editTriggerForm.name.$error.name" class="error">{{ error|translate }}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <!-- Place for help-->
+                  </div>
+                </div>
+              </div>
+              <div class="stepper-step">
+                <div class="stepper-index"><span>2</span></div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label translate="Loads on" class="control-label"></label>
+                      <cc-help placement="right" content="{{'Choose or create a new trigger(s) to specify how and when you want to fire the tag.'|translate}}&lt;br /&gt;{{'- Page view - fire the tag when the page loads according to the set conditions.'|translate}}&lt;br /&gt;{{'- Click - fire the tag when a user clicks on a page according to the set conditions.'|translate}}&lt;br /&gt;{{'- Event - fire the tag on a specific event(s) according to the set conditions.'|translate}}&lt;br /&gt;{{'- Form submission - fire the tag when a user submits a form according to the set conditions.'|translate}}"></cc-help>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div role="group" class="btn-group"><a id="trigger-form-{{$index}}-type" ng-repeat="type in triggerForm.typesArray" ng-class="{'active' : triggerForm.trigger.type === $index}" ng-click="currentContainer.$container.hasPermission('edit') ? triggerForm.setType($index) : ''; view.validateTriggers = false;" ng-disabled="!currentContainer.$container.hasPermission('edit')" class="btn btn-default">{{ type|translate }}</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="stepper-step">
+                <div class="stepper-index"><span>3</span></div>
+                <div class="form-group">
+                  <label class="control-label"><span translate="Conditions"></span>
+                    <cc-help placement="right" content="{{'Add a condition(s) for firing your tag(s). You can add extra rules like firing on certain pages, clicking on a defined element, and many more.'|translate}}"></cc-help>
+                  </label>
+                  <div ng-switch="triggerForm.trigger.type" ng-show="triggerForm.trigger.conditions.length === 0" ng-init="view.validateTriggers = false;" class="form-group">
+                    <div class="form-group">
+                      <label translate="Fire tag on all pages" ng-switch-when="0" style="color:#2e9354" class="control-label"></label>
+                      <label translate="Fire tag on all clicks" ng-switch-when="1" style="color:#2e9354" class="control-label"></label>
+                      <label translate="Fire tag on all sending forms" ng-switch-when="3" style="color:#2e9354" class="control-label"></label>
+                      <label translate="or" ng-if="currentContainer.$container.hasPermission('edit')" class="control-label"></label>
+                          <a class="btn btn-default btn-md" translate="Add a condition(s)" ng-click="triggerForm.addCondition()" ng-if="currentContainer.$container.hasPermission('edit')" id="condition-add-button">
+                          </a>
+                    </div>
+                  </div>
+                  <div ng-repeat="condition in triggerForm.trigger.conditions" ng-class="{'has-error': (editTriggerForm['conditionValue[{{$index}}]'].$dirty &amp;&amp; editTriggerForm['conditionValue[{{$index}}]'].$invalid) || (editTriggerForm['conditionValue[{{$index}}]'].$invalid &amp;&amp; view.validateTriggers)}" ng-init="view.conditionLength = triggerForm.trigger.conditions.length" class="form-inline bottom-space stg-condition">
+                    <div class="form-group">
+                      <div class="width-180">
+                        <select ng-model="condition.variable" cc-select="cc-select" ng-options="variable.type as variable.name for variable in triggerForm.variables" id="condition-form-{{$index}}-select-variable" ng-click="setActions(condition.variable)" cc-select-options="triggerForm.variables" cc-select-value="name" cc-select-label="name" ng-if="!triggerForm.isTypeRequired(condition.variable) &amp;&amp; currentContainer.$container.hasPermission('edit')" class="form-control"></select>
+                        <div ng-if="triggerForm.isTypeRequired(condition.variable) || !currentContainer.$container.hasPermission('edit')" class="control-label required-variable">{{ triggerForm.getVariableName(condition.variable) }}</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="width-180">
+                        <select ng-model="condition.condition" cc-select="cc-select" ng-options="condition.type as condition.name for condition in triggerForm.actions" id="condition-form-{{$index}}-select-condition" cc-select-options="triggerForm.actions" cc-select-value="type" cc-select-label="name" ng-if="currentContainer.$container.hasPermission('edit')" class="form-control"></select>
+                        <div ng-if="!currentContainer.$container.hasPermission('edit')" class="control-label required-variable">{{ triggerForm.getConditionName(condition.condition) }}</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <input ng-model="condition.value" name="conditionValue[{{$index}}]" id="condition-form-{{$index}}-input-value" required="required" ng-disabled="!currentContainer.$container.hasPermission('edit')" class="form-control width-180"/>
+                    </div>
+                    <div class="form-group">
+                      <button ng-click="view.conditionLength = view.conditionLength-1; triggerForm.trigger.removeCondition($index);" id="condition-form-{{$index}}-remove-button" ng-if="!triggerForm.isTypeRequired(condition.variable) &amp;&amp; currentContainer.$container.hasPermission('edit')" class="btn btn-default btn-action">-</button>
+                    </div>
+                    <div class="form-group">
+                      <button ng-show="$last" ng-click="triggerForm.addCondition()" id="condition-form-{{$index}}-add-button" ng-if="currentContainer.$container.hasPermission('edit')" class="btn btn-default btn-action">+</button>
+                    </div>
+                    <div class="row">
+                      <div ng-show="(editTriggerForm['conditionValue[{{$index}}]'].$invalid &amp;&amp; editTriggerForm['conditionValue[{{$index}}]'].$dirty) || (editTriggerForm['conditionValue[{{$index}}]'].$invalid &amp;&amp; view.validateTriggers)" class="col-lg-8">
+                        <p translate="Required" class="error"></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                    <a class="btn btn-primary btn-md" id="trigger-form-edit-button" translate="Save" ng-if="currentContainer.$container.hasPermission('edit')" ng-click="triggerForm.validateTrigger(editTriggerForm, view.conditionLength) ? triggerForm.submitForm(triggerForm.trigger) : view.validateTriggers = true">
+                    </a>
+                    <a class="btn btn-default btn-md" translate="Cancel" ng-click="view.editTriggerForm = false">
+                    </a>
+              </div>
+            </form>
+          </div>
+          <div ng-if="view.showListTriggersForm" class="stepper-subform">
+            <!--mixin icon(name)-->
+            <!--    i.icon-#{name}-->
+            <div class="form form-substep">
+              <table ng-table="view.existingTable" template-pagination="st-pagination.html" template-header="st-header.html" class="table table-condensed existing-triggers">
+                <tr id="trigger-existing-{{ trigger.id }}-row" ng-repeat="trigger in $data track by trigger.id">
+                  <td data-title="''" class="existing-triggers-col1">
+                    <input type="checkbox" cc-checkbox="cc-checkbox" name="trigger_{{ trigger.id }}" checklist-model="view.chosenTriggers" checklist-value="trigger" id="trigger-existing-{{ trigger.id }}-checkbox"/>
+                  </td>
+                  <td data-title="'Name'" class="existing-triggers-col2"><span title="{{ trigger.name }}">{{ trigger.name | limitTo : 30 }}{{trigger.name.length > 30 ? '...' : ''}}</span></td>
+                  <td data-title="'Type'" class="existing-triggers-col3">{{ view.types[trigger.type]|translate }}</td>
+                </tr>
+              </table>
+              <div ng-show="!view.existingTable.settings().$loading &amp;&amp; view.existingTable.total() === 0" class="alert alert-empty ng-hide">
+                <h2 class="text-center"><strong translate="Your list is empty" translate-values="{list: ENTITY_NAME.toLowerCase()}"></strong></h2>
+                <p translate="To add a new click the button below." translate-values="{ object: Trigger }" class="text-center"></p>
+                <p class="text-center action">
+                              <a class="btn btn-primary btn-md" id="trigger-create-new-trigger-button" ng-click="view.showTriggerForm = true; view.showListTriggersForm = false; view.validateTriggers = false;">
+                                <spam class="plus">+</spam><strong translate="Add a new trigger"></strong>
+                              </a>
+                </p>
+                <p class="text-center cancel">
+                              <a class="btn btn-link btn-md" id="trigger-cancel-trigger-button" ng-click="view.showListTriggersForm = false; view.validateTriggers = false;" style="padding: 7px 32px;" translate="Cancel">
+                              </a>
+                </p>
+              </div>
+              <div ng-if="!view.existingTable.settings().$loading &amp;&amp; view.existingTable.total() !== 0" class="form-group">
+                            <a class="btn btn-primary btn-md" id="trigger-existing-add-button" ng-click="view.addExistingTriggers(); view.showListTriggersForm = false;" translate="Add">
+                            </a>
+                            <a class="btn btn-default btn-md" id="trigger-existing-cancel-button" ng-click="view.showListTriggersForm = false; view.chosenTriggers = [];" translate="Cancel">
+                            </a>
+              </div>
+            </div>
+          </div>
+          <div ng-if="!view.showTriggerForm &amp;&amp; !view.showListTriggersForm &amp;&amp; !view.editTriggerForm">
+            <div ng-if="currentContainer.$container.hasPermission('edit')" class="form-group">
+                          <a class="btn btn-primary btn-md" id="trigger-create-new-trigger-button" translate="+ Add a new trigger" ng-click="view.showTriggerForm = true; view.validateTriggers = false;">
+                          </a>
+                          <a class="btn btn-primary btn-md" id="trigger-add-existing-trigger-button" translate="Choose an existing trigger" ng-click="view.showExistingTriggers()">
+                          </a>
+            </div>
+            <div ng-if="view.tag.triggers.length" class="form-group">
+              <label translate="Added triggers" ng-if="currentContainer.$container.hasPermission('edit')" class="control-label"></label>
+              <ul class="list-inline">
+                <li ng-repeat="trigger in view.tag.triggers track by trigger.id" id="trigger-list-row-{{ trigger.id }}-name" class="label-list trigger-label-list-item"><span ng-click="view.triggerId = trigger.id; view.editTriggerForm = true;" title="{{ trigger.name }}" class="label label-default text-left link">{{ trigger.name | limitTo : 30 }}{{trigger.name.length > 30 ? '...' : ''}}<i id="trigger-list-row-{{ trigger.id }}-action-delete" ng-if="currentContainer.$container.hasPermission('edit')" ng-click="view.tag.removeTrigger(trigger)" class="icon-close-fill"></i></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-if="currentContainer.$container.hasPermission('edit')" class="form-group">
+        <hr class="divider"/>
+                    <input type="submit" value="{{&quot;Save&quot;|translate}}" class="btn btn-primary" ng-click="tagForm.$valid ? view.submitForm(view.tag) : view.displayInvalidFormMessage()" ng-disabled="view.showTriggerForm === true || view.showListTriggersForm === true || view.editTriggerForm === true || view.formTouched === false" id="tag-form-submit-button"/>
+      </div>
+    </div>
+  </div>
+</div>

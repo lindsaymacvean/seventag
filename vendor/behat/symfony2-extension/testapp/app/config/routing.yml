@@ -1,0 +1,3 @@
+test:
+    pattern:  /
+    defaults: { _controller: BehatSf2DemoBundle:Test:index }

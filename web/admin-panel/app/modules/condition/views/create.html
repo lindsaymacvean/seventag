@@ -1,0 +1,39 @@
+
+<div ng-switch="triggerForm.trigger.type" ng-show="triggerForm.trigger.conditions.length === 0" ng-init="view.validateTriggers = false;" class="form-group">
+  <div class="form-group">
+    <label translate="Fire tag on all pages" ng-switch-when="0" style="color:#2e9354" class="control-label"></label>
+    <label translate="Fire tag on all clicks" ng-switch-when="1" style="color:#2e9354" class="control-label"></label>
+    <label translate="Fire tag on all sending forms" ng-switch-when="3" style="color:#2e9354" class="control-label"></label>
+    <label translate="or" ng-if="currentContainer.$container.hasPermission('edit')" class="control-label"></label>
+    <a class="btn btn-default btn-md" translate="Add a condition(s)" ng-click="triggerForm.addCondition()" ng-if="currentContainer.$container.hasPermission('edit')" id="condition-add-button">
+    </a>
+  </div>
+</div>
+<div ng-repeat="condition in triggerForm.trigger.conditions" ng-class="{'has-error': (undefined['conditionValue[{{$index}}]'].$dirty &amp;&amp; undefined['conditionValue[{{$index}}]'].$invalid) || (undefined['conditionValue[{{$index}}]'].$invalid &amp;&amp; view.validateTriggers)}" ng-init="view.conditionLength = triggerForm.trigger.conditions.length" class="form-inline bottom-space stg-condition">
+  <div class="form-group">
+    <div class="width-180">
+      <select ng-model="condition.variable" cc-select="cc-select" ng-options="variable.type as variable.name for variable in triggerForm.variables" id="condition-form-{{$index}}-select-variable" ng-click="setActions(condition.variable)" cc-select-options="triggerForm.variables" cc-select-value="name" cc-select-label="name" ng-if="!triggerForm.isTypeRequired(condition.variable) &amp;&amp; currentContainer.$container.hasPermission('edit')" class="form-control"></select>
+      <div ng-if="triggerForm.isTypeRequired(condition.variable) || !currentContainer.$container.hasPermission('edit')" class="control-label required-variable">{{ triggerForm.getVariableName(condition.variable) }}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="width-180">
+      <select ng-model="condition.condition" cc-select="cc-select" ng-options="condition.type as condition.name for condition in triggerForm.actions" id="condition-form-{{$index}}-select-condition" cc-select-options="triggerForm.actions" cc-select-value="type" cc-select-label="name" ng-if="currentContainer.$container.hasPermission('edit')" class="form-control"></select>
+      <div ng-if="!currentContainer.$container.hasPermission('edit')" class="control-label required-variable">{{ triggerForm.getConditionName(condition.condition) }}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <input ng-model="condition.value" name="conditionValue[{{$index}}]" id="condition-form-{{$index}}-input-value" required="required" ng-disabled="!currentContainer.$container.hasPermission('edit')" class="form-control width-180"/>
+  </div>
+  <div class="form-group">
+    <button ng-click="view.conditionLength = view.conditionLength-1; triggerForm.trigger.removeCondition($index);" id="condition-form-{{$index}}-remove-button" ng-if="!triggerForm.isTypeRequired(condition.variable) &amp;&amp; currentContainer.$container.hasPermission('edit')" class="btn btn-default btn-action">-</button>
+  </div>
+  <div class="form-group">
+    <button ng-show="$last" ng-click="triggerForm.addCondition()" id="condition-form-{{$index}}-add-button" ng-if="currentContainer.$container.hasPermission('edit')" class="btn btn-default btn-action">+</button>
+  </div>
+  <div class="row">
+    <div ng-show="(undefined['conditionValue[{{$index}}]'].$invalid &amp;&amp; undefined['conditionValue[{{$index}}]'].$dirty) || (undefined['conditionValue[{{$index}}]'].$invalid &amp;&amp; view.validateTriggers)" class="col-lg-8">
+      <p translate="Required" class="error"></p>
+    </div>
+  </div>
+</div>

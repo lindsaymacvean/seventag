@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Installer - parameters{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="stg-notification stg-notification-success center-block">
+                    Please create file inside this path <mark>{{ parametersPath }}</mark> and paste content dumped below.
+                    If everything is correct please click "Continue" button.
+                </div>
+
+                <textarea class="form-control" readonly rows="25">{{ parameters }}</textarea>
+
+                <a href="{{ path('admin') }}" class="btn btn-success submitLink">Continue</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+var optOutParameterName = '_stg_opt_out_iframe',
+    optOutCookieName = '_stg_optout',
+    optOutCookieCheckboxName = '_stg_optout_checkbox',
+    optOutCookieCheckboxLabelName = '_stg_optout_checkbox_label';
+
+var optedInCheckboxText = 'You are currently opted in. Click here to opt out.',
+    optedOutCheckboxText = 'You are currently opted out. Click here to opt in.';
+
+
+/**
+ * @returns {HTMLDocument}
+ */
+var getIframeDocument = function () {
+    var iframe = document.getElementById(optOutParameterName);
+
+    return iframe.contentWindow.document;
+};
+
+var loadOptOut = function () {
+    var contentDiv = document.getElementById(optOutParameterName + '_content');
+
+    var iframeDoc = getIframeDocument();
+
+    iframeDoc.open();
+    iframeDoc.write(contentDiv.innerHTML);
+    iframeDoc.close();
+};
+
+var storeUserOptOutPreferences = function () {
+    var expiresDate = 60 * 60 * 24 * 365,
+        iframeDoc = getIframeDocument(),
+        value = iframeDoc.getElementById(optOutCookieCheckboxName).checked,
+        cookies = sevenTag.$injector.get('$cookie');
+
+    cookies.add(optOutCookieName, value, expiresDate);
+
+    updateCheckboxLabel(iframeDoc, value);
+};
+
+var getOptoutCookie = function () {
+    var cookies = sevenTag.$injector.get('$cookie');
+
+    return cookies.get(optOutCookieName);
+};
+
+window.onload = function () {
+    if (!sevenTag) {
+        return;
+    }
+
+    var iframeDoc = getIframeDocument(),
+        isOptedOut = getOptoutCookie() === 'true';
+
+    iframeDoc.getElementById(optOutCookieCheckboxName).checked = isOptedOut;
+
+    updateCheckboxLabel(iframeDoc, isOptedOut);
+};
+
+function updateCheckboxLabel (iframeDoc, isChecked) {
+    var labelElement = iframeDoc.getElementById(optOutCookieCheckboxLabelName),
+        newLabelText = isChecked ? optedInCheckboxText : optedOutCheckboxText;
+
+    labelElement.innerText = newLabelText;
+}

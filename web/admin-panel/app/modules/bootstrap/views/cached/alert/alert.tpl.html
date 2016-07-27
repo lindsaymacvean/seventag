@@ -1,0 +1,4 @@
+
+<div ng-class="[type ? 'alert-' + type : null]" class="alert">
+  <button type="button" ng-if="dismissable" ng-click="$hide()" class="close">&times;</button><strong ng-bind="title">&nbsp;</strong><span ng-bind-html="content"></span>
+</div>

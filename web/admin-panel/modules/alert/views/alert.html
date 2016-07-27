@@ -1,0 +1,5 @@
+
+<div id="alert-message-{{ $index }}-{{ alert.type }}" ng-repeat="alert in alertCtrl.getAll()" style="top: {{ alertTopPosition }}px" ng-click="alertCtrl.clear()" class="alert alert-{{ alert.type }} alert-top">
+  <div class="close-btn"><i class="icon-cancel"></i></div>
+  <p>{{alert.message}}</p>
+</div>

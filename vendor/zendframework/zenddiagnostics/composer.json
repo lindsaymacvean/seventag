@@ -1,0 +1,45 @@
+{
+    "name": "zendframework/zenddiagnostics",
+    "description": "A set of components for performing diagnostic tests in PHP applications",
+    "keywords": [
+        "php",
+        "diagnostics",
+        "test"
+    ],
+    "homepage": "https://github.com/zendframework/ZendDiagnostics",
+    "license": "BSD-3-Clause",
+    "autoload": {
+        "psr-0": {
+            "ZendDiagnostics\\": "src/",
+            "ZendDiagnosticsTest\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "zendframework/zend-loader"  : "2.*",
+        "sensiolabs/security-checker": "1.3.*@dev",
+        "symfony/yaml"               : "v2.3.11",
+        "guzzle/http"                : "3.*",
+        "guzzle/plugin-mock"         : "3.*",
+        "videlalvaro/php-amqplib"    : "2.*",
+        "predis/predis"              : "0.8.*",
+        "phpunit/phpunit"            : "4.7.*",
+        "doctrine/migrations"        : "~1.0@dev"
+    },
+    "suggest" : {
+        "ext-bcmath" : "Required by Check\\CpuPerformance",
+        "sensiolabs/security-checker": "Required by Check\\SecurityAdvisory",
+        "symfony/yaml": "Required by Check\\YamlFile",
+        "guzzle/http": "Required by Check\\GuzzleHttpService",
+        "predis/predis": "Required by Check\\Redis",
+        "videlalvaro/php-amqplib": "Required by Check\\RabbitMQ",
+        "doctrine/migrations": "Required by Check\\DoctrineMigration"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}

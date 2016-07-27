@@ -1,0 +1,36 @@
+
+<div class="row">
+  <cc-breadcrumb></cc-breadcrumb>
+</div>
+<div class="row">
+  <h2 class="page-header"><i class="icon-container"></i><strong translate="Containers"></strong>
+    <cc-help placement="right" content="{{'Create a container and manage all your tags here. Just paste the Container code into your website’s code (in between the &amp;lt;body&amp;gt; &amp;lt;body&amp;gt; element of all your pages), set the triggers, and save your time.'|translate}}"></cc-help>
+    <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() &gt; 0" class="pull-right">
+      <a class="btn btn-primary btn-md stg-link-btn" id="container-list-create-link" href="href" ui-sref="containerCreate()" ng-if="security.hasRole('ROLE_CONTAINERS_CREATE')"><span class="plus">+</span><strong translate="Add a container"></strong>
+      </a>
+    </div>
+  </h2>
+  <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" class="alert alert-info alert-empty">
+    <h2 class="text-center"><strong translate="Your list is empty" translate-values="{ list: ENTITY_NAME.toLowerCase() }"></strong></h2>
+    <p ng-if="(currentContainer.$container.hasPermission('edit'))" class="text-center"><span translate="To add a new click the button below." translate-value="{ object: ENTITY_NAME }"></span></p>
+    <p class="text-center action">
+      <a class="btn btn-primary btn-md stg-link-btn" id="container-list-create-link" href="href" ui-sref="containerCreate()" ng-if="security.hasRole('ROLE_CONTAINERS_CREATE')"><span class="plus">+</span><strong translate="Add a container"></strong>
+      </a>
+    </p>
+  </div>
+  <table ng-table="view.tableParams" id="container-list" template-pagination="st-pagination.html" ng-hide="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" template-header="container-list-st-header.html" class="table table-blocks">
+    <tbody>
+      <tr ng-repeat="container in $data" id="container-list-row-{{ $index }}" ng-init="showMenu = false">
+        <td sortable="name" id="container-list-row-{{ $index }}-name" class="col-md-6"><a ui-sref="tags({containerId: container.id})" ui-sref-opts="{id: {{ container.id }}}" title="{{ container.name }}">{{ container.name | limitTo : 40 }}{{ container.name.length > 40 ? '...' : '' }}</a></td>
+        <td sortable="permissions" id="container-list-row-{{ $index }}-permissions" class="col-md-3"> {{ container.getPermission()|translate }}</td>
+        <td sortable="id" id="container-list-row-{{ $index }}-id" class="col-md-2"> {{ container.id }}</td>
+        <td id="container-list-row-{{ $index }}-action" ng-class="{active: showMenu, 'disabled': !container.hasPermission('edit')}" class="col-md-1 actions context-menu-actions">
+          <ul ng-if="showMenu" class="list-inline">
+            <li><a href="" ui-sref="containerEdit({containerId: container.id})" id="container-list-row-{{ $index }}-edit"><i class="icon-edit"></i><span translate="Edit"></span></a></li>
+            <li><a href="" cc-confirm="view.removeContainer(container)" id="container-list-row-{{ $index }}-delete"><i class="icon-delete"></i><span translate="Delete"></span></a></li>
+          </ul><a href="" ng-click="container.hasPermission('edit') ? showMenu = !showMenu : ''" class="dots"><i ng-if="container.hasPermission('edit')" class="icon-dots"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

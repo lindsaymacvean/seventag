@@ -1,0 +1,188 @@
+/**
+ * Copyright (C) 2015 Digimedia Sp. z.o.o. d/b/a Clearcode
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This program is distrubuted in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+$table-border-radius: 2px;
+$table-rows-spacing: 10px;
+
+%table-cell {
+  padding: $table-cell-padding $table-cell-padding 0 $table-cell-padding;
+  a:hover {
+    text-decoration: none;
+  }
+  
+  .list-inline {
+    i[class^=icon-] {
+      position: relative;
+      margin-right: 5px;
+      top: 1px;
+    }
+  }
+}
+
+%table-cell-actions-behaviour {
+  &.actions {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 10px 10px 10px 0;
+    &.actions-content {
+      .list-inline li {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+      padding: 15px 32px 0;
+      i[class^=icon-] {
+        position: relative;
+        margin-right: 5px;
+        top: 1px;
+        font-size: 16px;
+      }
+      a:hover {
+        color: $link-color;
+        text-decoration: none;
+      }
+    }
+    a.dots {
+      display: block;
+      height: 33px;
+      border-left: 1px solid $table-border-color;
+      padding: 10px;
+      text-align: center;
+    }
+    &:hover, &.active {
+      background-color: #ededed;
+      a {
+        color: $text-color;
+      }
+    }
+    &.disabled {
+      background-color: white;
+      cursor: default;
+
+      a {
+          border-left: none;
+          cursor: default;
+      }
+    }
+  }
+}
+
+.table.table-blocks {
+  border-collapse: separate;
+  border-spacing: 0 $table-rows-spacing;
+  thead > tr > th {
+    border-bottom: 0px;
+    padding: 0 18px;
+  }
+//  i[class^=icon-] {
+//    position: relative;
+//    margin-right: 10px;
+//  }
+  tbody > tr > td {
+
+    @extend %table-cell;
+    @extend %table-cell-actions-behaviour;
+
+    border-top: 1px solid $table-border-color;
+    border-bottom: 1px solid $table-border-color;
+    &:first-child {
+      border-left: 1px solid $table-border-color;
+      border-top-left-radius: $table-border-radius;
+      border-bottom-left-radius: $table-border-radius;
+    }
+    &:last-child {
+      border-right: 1px solid $table-border-color;
+      border-top-right-radius: $table-border-radius;
+      border-bottom-right-radius: $table-border-radius;
+    }
+    &.ellipsis {
+      max-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+.div-table {
+  min-width: 470px;
+
+  .div-table-header {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: $table-rows-spacing;
+
+    color: $text-color;
+    font-weight: bold;
+
+    > div {
+      @extend %table-cell;
+    }
+  }
+
+  .div-table-row {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: $table-rows-spacing;
+    border: 1px solid $table-border-color;
+    border-radius: $table-border-radius;
+  }
+
+  .div-table-cell {
+    @extend %table-cell;
+    @extend %table-cell-actions-behaviour;
+
+    &.ellipsis {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+.existing-triggers, .stg-table {
+  font-size: 12px;
+
+  td {
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
+  }
+
+  .cc-checkbox {
+    margin-left: 0;
+  }
+
+  .existing-triggers-col1, .stg-col-1 {
+    width: 40px;
+  }
+  .existing-triggers-col2, .stg-col-2 {
+    width: 500px;
+  }
+  .existing-triggers-col3, .stg-col-3 {
+    width: 434px;
+  }
+  .stg-col-4 {
+    width: 150px;
+  }
+}
+
+td:not(.active).actions:hover, .icon-dots:hover {
+    cursor: pointer;
+}

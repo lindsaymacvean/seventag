@@ -1,0 +1,49 @@
+{
+    "name": "liip/monitor-bundle",
+    "type": "symfony-bundle",
+    "description": "Liip Monitor Bundle",
+    "keywords": ["monitoring", "monitor", "check", "health"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alvaro Videla",
+            "email": "alvaro.videla@liip.ch"
+        },
+        {
+            "name": "Kevin Bond",
+            "homepage": "http://zenstruck.com/"
+        },
+        {
+            "name": "Liip AG",
+            "homepage": "http://www.liip.ch/"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://github.com/liip/LiipMonitorBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": "^5.3.9|^7.0",
+        "symfony/framework-bundle": "~2.3|~3.0",
+        "zendframework/zenddiagnostics": "^1.0.2"
+    },
+    "require-dev": {
+        "matthiasnoback/symfony-dependency-injection-test": "^0.7.4",
+        "sensiolabs/security-checker": "~1.3|~2.0|~3.0",
+        "guzzle/guzzle": "~3.8",
+        "symfony/expression-language": "~2.3|~3.0",
+        "swiftmailer/swiftmailer": "~5.4"
+},
+    "suggest": {
+        "sensio/distribution-bundle": "To be able to use the composer ScriptHandler",
+        "symfony/expression-language": "To use the Expression check"
+    },
+    "autoload": {
+        "psr-4": { "Liip\\MonitorBundle\\": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.3-dev"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+<!-- Google Code for Test AdWords Conversion Page -->
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = {{ conversionId|raw }};
+    var google_conversion_language = "en";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = {{ conversionLabel|variable|raw }};
+    var google_remarketing_only = {{ remarketingOnly is empty ? 0 : 1 }};
+    {% if conversionValue is defined and conversionValue is not empty %}
+    var google_conversion_value = {{ conversionValue|variable|raw }};
+    {% endif %}
+    /* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>

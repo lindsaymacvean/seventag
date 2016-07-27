@@ -1,0 +1,143 @@
+
+<!--mixin icon(name)-->
+<!--    i.icon-#{name}-->
+<div class="row">
+  <cc-breadcrumb></cc-breadcrumb>
+</div>
+<div class="row">
+  <div cg-busy="{promise: view.userPromise, templateUrl: &quot;app/views/loader.html&quot;}" class="panel panel-default">
+    <div class="panel-body">
+      <h4 ng-hide="view.success" class="form-heading">{{"Add a new user"|translate}}</h4>
+      <form name="createUserForm" novalidate="novalidate" stg-form="stg-form" form-resource="view.userPromise">
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (createUserForm.email.$dirty &amp;&amp; createUserForm.email.$invalid &amp;&amp; createUserForm.email.$touched) || (createUserForm.email.$error.required &amp;&amp; createUserForm.email.$touched) || (view.validateUser &amp;&amp; createUserForm.email.$error.required), 'has-feedback': (createUserForm.email.$dirty &amp;&amp; createUserForm.email.$invalid) || (view.validateUser &amp;&amp; createUserForm.email.$error.required)}" class="form-group">
+              <label ng-class="{'error': (createUserForm.email.$dirty &amp;&amp; createUserForm.email.$invalid) || (view.validateUser &amp;&amp; createUserForm.email.$error.required)}" class="control-label">{{'Email'|translate}} <span class="important">*</span></label>
+              <input type="email" name="email" ng-model="view.user.email" ng-keypress="createUserForm.email.$error.email !== undefined ? createUserForm.email.$error = {} : ''" class="form-control" id="user-form-email" ng-required="true" ng-disabled="{{ $state.includes('userEdit') || $state.includes('editProfile') }}"/>
+              <div ng-if="createUserForm.$error.email &amp;&amp; createUserForm.email.$touched">
+                <p translate="Invalid email address" class="error"></p>
+              </div>
+              <div id="user-form-email-validation-message" ng-show="(createUserForm.email.$error.required &amp;&amp; createUserForm.email.$dirty) || (view.validateUser &amp;&amp; createUserForm.email.$error.required)">
+                <p translate="Required" class="error"></p>
+              </div>
+              <div id="undefined-validation-message" ng-show="createUserForm.email.$error.email">
+                <p ng-repeat="error in createUserForm.email.$error.email" class="error">{{ error|translate }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (createUserForm.firstName.$dirty &amp;&amp; createUserForm.firstName.$invalid) || (view.validateUser &amp;&amp; createUserForm.firstName.$error.required) || createUserForm.firstName.$error.firstName, 'has-feedback': (createUserForm.firstName.$dirty &amp;&amp; createUserForm.firstName.$invalid) || (view.validateUser &amp;&amp; createUserForm.firstName.$error.required)}" class="form-group">
+              <label class="control-label">{{'First name'|translate}} <span class="important">*</span></label>
+              <input type="text" name="firstName" ng-model="view.user.firstName" ng-keypress="createUserForm.firstName.$error.firstName !== undefined ? createUserForm.firstName.$error = {} : ''" class="form-control" id="user-form-firstName" ng-required="true"/><span ng-if="(createUserForm.$submitted &amp;&amp; createUserForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+              <div id="user-form-firstName-validation-message" ng-show="(createUserForm.firstName.$error.required &amp;&amp; createUserForm.firstName.$dirty) || (view.validateUser &amp;&amp; createUserForm.firstName.$error.required)">
+                <p translate="Required" class="error"></p>
+              </div>
+              <div id="undefined-validation-message" ng-show="createUserForm.firstName.$error.firstName">
+                <p ng-repeat="error in createUserForm.firstName.$error.firstName" class="error">{{ error|translate }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (createUserForm.lastName.$dirty &amp;&amp; createUserForm.lastName.$invalid) || (view.validateUser &amp;&amp; createUserForm.lastName.$error.required) || createUserForm.lastName.$error.lastName, 'has-feedback': (createUserForm.lastName.$dirty &amp;&amp; createUserForm.lastName.$invalid) || (view.validateUser &amp;&amp; createUserForm.lastName.$error.required)}" class="form-group">
+              <label class="control-label">{{'Last name'|translate}} <span class="important">*</span></label>
+              <input type="text" name="lastName" ng-model="view.user.lastName" ng-keypress="createUserForm.lastName.$error.lastName !== undefined ? createUserForm.lastName.$error = {} : ''" class="form-control" id="user-form-lastName" ng-required="true"/><span ng-if="(createUserForm.$submitted &amp;&amp; createUserForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+              <div id="user-form-lastName-validation-message" ng-show="(createUserForm.lastName.$error.required &amp;&amp; createUserForm.lastName.$dirty) || (view.validateUser &amp;&amp; createUserForm.lastName.$error.required)">
+                <p translate="Required" class="error"></p>
+              </div>
+              <div id="undefined-validation-message" ng-show="createUserForm.lastName.$error.lastName">
+                <p ng-repeat="error in createUserForm.lastName.$error.lastName" class="error">{{ error|translate }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+        <div ng-if="view.displayRoleSectionForUser()" class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div class="form-group">
+              <label translate="Roles" class="control-label"></label>
+              <div class="form-group">
+                <div>
+                  <label>
+                    <input type="radio" cc-radio="cc-radio" name="view.role" ng-model="view.role" cc-radio-model="view.role" value="ROLE_SUPER_ADMIN"/>{{'Admin'|translate}}
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input type="radio" cc-radio="cc-radio" name="view.role" ng-model="view.role" cc-radio-model="view.role" value="ROLE_USER"/>{{'User'|translate}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+          <div ng-show="view.role === 'ROLE_USER'" class="col-lg-8 col-md-12 col-sm-12">
+            <div class="form-group cc-checkbox-margined">
+              <input type="checkbox" cc-checkbox="cc-checkbox" ng-model="view.createContainerRole" ng-click="view.setRole('ROLE_CONTAINERS_CREATE')" name="rolesCreateContainer" id="user-permission-create-container"/>
+              <label translate="Create container" class="control-label"></label>
+            </div>
+          </div>
+        </div>
+        <div ng-if="$state.includes('userCreate')" class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div class="form-group">
+              <label translate="Activation" class="control-label"></label>
+              <div class="form-group">
+                <div>
+                  <label>
+                    <input type="radio" cc-radio="cc-radio" name="view.activation" ng-model="view.activation" cc-radio-model="view.activation" value="ACTIVATION_EMAIL"/>{{'Send an email with the activation link'|translate}}
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input type="radio" cc-radio="cc-radio" name="view.activation" ng-model="view.activation" cc-radio-model="view.activation" value="ACTIVATION_SET_PASSWORD"/>{{'Set user\'s password'|translate}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-show="view.displayPasswordSection()" class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'stg-form-subform' : $state.includes('userCreate')}">
+              <div ng-class="{'has-error': (createUserForm.first.$dirty &amp;&amp; createUserForm.first.$invalid) || (view.validateUser &amp;&amp; createUserForm.first.$error.required), 'has-feedback': (createUserForm.first.$dirty &amp;&amp; createUserForm.first.$invalid) || (view.validateUser &amp;&amp; createUserForm.first.$error.required)}" class="form-group">
+                <label ng-class="{'error': (createUserForm.first.$dirty &amp;&amp; createUserForm.first.$invalid) || (view.validateUser &amp;&amp; createUserForm.first.$error.required)}" class="control-label">{{'Password'|translate}} <span ng-if="($state.includes('userCreate'))" class="important">*</span></label>
+                <input type="password" name="first" ng-model="view.password.first" ng-keypress="createUserForm.first.$error.first !== undefined ? createUserForm.first.$error = {} : ''" class="form-control" id="user-form-password"/>
+                <div id="undefined-validation-message" ng-show="createUserForm.first.$error.first">
+                  <p ng-repeat="error in createUserForm.first.$error.first" class="error">{{ error|translate }}</p>
+                </div>
+              </div>
+              <div ng-class="{'has-error': (createUserForm.second.$dirty &amp;&amp; createUserForm.second.$invalid) || (view.validateUser &amp;&amp; createUserForm.second.$error.required), 'has-feedback': (createUserForm.second.$dirty &amp;&amp; createUserForm.second.$invalid) || (view.validateUser &amp;&amp; createUserForm.second.$error.required)}" class="form-group">
+                <label ng-class="{'error': (createUserForm.second.$dirty &amp;&amp; createUserForm.second.$invalid) || (view.validateUser &amp;&amp; createUserForm.second.$error.required)}" class="control-label">{{'Repeat password'|translate}} <span ng-if="($state.includes('userCreate'))" class="important">*</span></label>
+                <input type="password" name="second" ng-model="view.password.second" ng-keypress="createUserForm.second.$error.second !== undefined ? createUserForm.second.$error = {} : ''" class="form-control" id="user-form-confirm-password" ng-match="view.password.first"/>
+                <div id="undefined-validation-message" ng-show="createUserForm.second.$error.second">
+                  <p ng-repeat="error in createUserForm.second.$error.second" class="error">{{ error|translate }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+      </form>
+      <hr class="divider"/>
+      <div class="form-group">
+        <input type="submit" value="{{'Save'|translate}}" class="btn btn-primary" ng-click="view.createUserFormValidation() ? view.submitForm(view.user) : view.validateUser = true" ng-disabled="view.showListUsersForm === true" id="user-form-submit-button"/>
+      </div>
+    </div>
+  </div>
+</div>

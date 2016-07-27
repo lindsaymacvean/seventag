@@ -1,0 +1,30 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "plugins": [
+        "agpl"
+    ],
+    "ecmaFeatures": {
+      "blockBindings": true,
+      "forOf": true,
+      "arrowFunctions": true,
+      "classes": true,
+      "defaultParams": true,
+      "destructuring": true,
+      "templateString": true,
+      "superInFunctions": true,
+      "spread": true
+    },
+    "rules": {
+        "agpl/valid-license": [2, "2015 Digimedia Sp. z.o.o. d/b/a Clearcode"],
+        "no-use-before-define": false,
+        "strict": [1, "global"],
+        "quotes": [1, "single", "avoid-escape"]
+    },
+    "globals": {
+        "angular": false
+    }
+}

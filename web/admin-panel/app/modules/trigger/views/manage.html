@@ -1,0 +1,37 @@
+
+<div class="row">
+  <cc-breadcrumb></cc-breadcrumb>
+</div>
+<div class="row">
+  <h2 class="page-header"><i class="icon-trigger"></i><strong translate="Triggers"></strong>
+    <cc-help placement="right" content="{{'A Trigger specifies how and when the tag should fire.'|translate}}&lt;br /&gt;{{'One trigger can be assigned to many tags.'|translate}}"></cc-help>
+    <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() &gt; 0" class="pull-right">
+      <a class="btn btn-primary btn-md stg-link-btn" id="tag-list-create-link" href="href" ui-sref="triggerCreate({containerId: activeContainerId})" ng-if="currentContainer.$container.hasPermission('edit')"><span class="plus">+</span><strong translate="Add a trigger"></strong>
+      </a>
+    </div>
+  </h2>
+  <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" class="alert alert-info alert-empty">
+    <h2 class="text-center"><strong translate="Your list is empty" translate-values="{ list: ENTITY_NAME.toLowerCase() }"></strong></h2>
+    <p ng-if="(currentContainer.$container.hasPermission('edit'))" class="text-center"><span translate="To add a new click the button below." translate-value="{ object: ENTITY_NAME }"></span></p>
+    <p class="text-center action">
+      <a class="btn btn-primary btn-md stg-link-btn" id="tag-list-create-link" href="href" ui-sref="triggerCreate({containerId: activeContainerId})" ng-if="currentContainer.$container.hasPermission('edit')"><span class="plus">+</span><strong translate="Add a trigger"></strong>
+      </a>
+    </p>
+  </div>
+  <table ng-table="view.tableParams" id="trigger-list" template-pagination="st-pagination.html" ng-hide="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" template-header="trigger-list-st-header.html" class="table table-blocks">
+    <tbody>
+      <tr ng-repeat="trigger in $data" id="trigger-list-row-{{ trigger.id }}" ng-init="showMenu = false">
+        <td sortable="name" id="trigger-list-row-{{ trigger.id }}-name" class="col-md-4"><a href="" ui-sref="triggerEdit({ containerId: activeContainerId, triggerId: trigger.id})" title="{{ trigger.name }}">{{ trigger.name | limitTo : 30 }}{{trigger.name.length > 30 ? '...' : ''}}</a></td>
+        <td sortable="type" id="trigger-list-row-{{ trigger.id }}-type" class="col-md-2">{{ view.typesArray[trigger.type]|translate }}</td>
+        <td sortable="tags_count" id="trigger-list-row-{{ trigger.id }}-tags-count" class="col-md-2">{{ trigger.tagsCount }}</td>
+        <td sortable="updated_at" id="trigger-list-row-{{ trigger.id }}-last-edit" class="col-md-3">{{ trigger.updatedAt | tmDate }}</td>
+        <td id="trigger-list-row-{{ trigger.id }}-action" ng-class="{active: showMenu, 'disabled': !currentContainer.$container.hasPermission('edit')}" class="col-md-1 actions context-menu-actions">
+          <ul ng-if="showMenu" class="list-inline">
+            <li><a href="" ui-sref="triggerEdit({containerId: activeContainerId, triggerId: trigger.id})" id="trigger-list-row-{{ trigger.id }}-edit"><i class="icon-edit"></i><span translate="Edit"></span></a></li>
+            <li><a href="" cc-confirm="view.removeTrigger(trigger)" id="trigger-list-row-{{ trigger.id }}-delete"><i class="icon-delete"></i><span translate="Delete"></span></a></li>
+          </ul><a href="" ng-click="currentContainer.$container.hasPermission('edit') ? showMenu = !showMenu : ''" class="dots"><i ng-if="currentContainer.$container.hasPermission('edit')" class="icon-dots"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

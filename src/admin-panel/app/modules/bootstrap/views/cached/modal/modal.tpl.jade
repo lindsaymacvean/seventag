@@ -1,0 +1,10 @@
+.modal(tabindex="-1", role="dialog")
+    .modal-dialog
+        .modal-content
+            .modal-header(ng-show="title")
+                button.close(type="button", ng-click="$hide()") &times;
+                h4.modal-title(ng-bind="title")
+            .modal-body(ng-bind="content")
+            .modal-footer
+                button.btn.btn-default(type="button", ng-click="$hide()", translate="Close")
+

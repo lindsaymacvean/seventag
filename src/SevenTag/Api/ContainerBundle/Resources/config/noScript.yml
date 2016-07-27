@@ -1,0 +1,27 @@
+parameters:
+    seven_tag_container.no_script.consumer.request.name: 'request'
+    seven_tag_container.no_script.consumer.no_script.name: 'noScript'
+
+services:
+    seven_tag_container.no_script.handler.no_script_handler:
+        class: SevenTag\Api\ContainerBundle\NoScript\Handler\NoScriptHandler
+        arguments: [ @sonata.notification.backend, '%seven_tag_container.no_script.consumer.request.name%' ]
+
+    seven_tag_container.no_script.consumer.no_script_consumer:
+        class: SevenTag\Api\ContainerBundle\NoScript\Consumer\NoScriptConsumer
+        arguments: [@seven_tag_container.no_script.request.guzzle]
+        tags:
+            - { name: sonata.notification.consumer, type: '%seven_tag_container.no_script.consumer.no_script.name%' }
+
+    seven_tag_container.no_script.consumer.request_consumer:
+        class: SevenTag\Api\ContainerBundle\NoScript\Consumer\RequestConsumer
+        arguments: [ @seven_tag_tag.repository.tag_repository, @sonata.notification.backend, '%seven_tag_container.no_script.consumer.no_script.name%' ]
+        tags:
+            - { name: sonata.notification.consumer, type: '%seven_tag_container.no_script.consumer.request.name%' }
+
+    seven_tag_container.no_script.factory.guzzle:
+        class: SevenTag\Api\ContainerBundle\NoScript\Factory\GuzzleNoScriptFactory
+
+    seven_tag_container.no_script.request.guzzle:
+        class: SevenTag\Api\ContainerBundle\NoScript\Request\GuzzleNoScriptRequest
+        factory: [@seven_tag_container.no_script.factory.guzzle, createClient]

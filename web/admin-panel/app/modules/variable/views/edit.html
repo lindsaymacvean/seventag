@@ -1,0 +1,73 @@
+
+<div class="row">
+  <cc-breadcrumb ng-hide="view.success || $state.includes('containerExplanation')"></cc-breadcrumb>
+</div>
+<div class="row">
+  <div cg-busy="{promise: view.variablePromise, templateUrl: &quot;app/views/loader.html&quot;}" class="panel panel-default">
+    <div class="panel-body">
+      <cc-notification-form ng-if="$state.includes('editProfile')" ng-show="!view.loading"></cc-notification-form>
+      <h4 ng-hide="view.success" class="form-heading"><span translate="Configure variable"></span></h4>
+      <form name="variableForm" novalidate="novalidate" stg-form="stg-form" form-resource="undefined">
+        <form name="variableForm" novalidate="novalidate" stg-form="stg-form" form-resource="view.variablePromise">
+          <div ng-init="view.validateVariable = false;">
+            <div class="stepper-step">
+              <div class="stepper-index"><span>1</span></div>
+              <div class="row">
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                  <div ng-class="{'has-error': (variableForm.name.$dirty &amp;&amp; variableForm.name.$invalid) || (view.validateVariable &amp;&amp; variableForm.name.$error.required) || variableForm.name.$error.name, 'has-feedback': (variableForm.name.$dirty &amp;&amp; variableForm.name.$invalid) || (view.validateVariable &amp;&amp; variableForm.name.$error.required)}" class="form-group">
+                    <label class="control-label">{{'Variable name'|translate}} <span class="important">*</span></label>
+                    <input type="text" name="name" ng-model="view.variable.name" ng-keypress="variableForm.name.$error.name !== undefined ? variableForm.name.$error = {} : ''" class="form-control" id="variable-form-name" ng-required="true" placeholder="{{'Name your variable'|translate}}" ng-init="view.conditionLength = 0" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span ng-if="(variableForm.$submitted &amp;&amp; variableForm.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+                    <div id="variable-form-name-validation-message" ng-show="(variableForm.name.$error.required &amp;&amp; variableForm.name.$dirty) || (view.validateVariable &amp;&amp; variableForm.name.$error.required)">
+                      <p translate="Required" class="error"></p>
+                    </div>
+                    <div id="undefined-validation-message" ng-show="variableForm.name.$error.name">
+                      <p ng-repeat="error in variableForm.name.$error.name" class="error">{{ error|translate }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <!-- Place for help-->
+                </div>
+              </div>
+            </div>
+            <div class="stepper-step">
+              <div class="stepper-index"><span>2</span></div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-8 col-md-12 col-sm-12">
+                    <label translate="Variable type" class="control-label"></label>
+                    <cc-help placement="right" content="{{'Choose or create a new variable(s) for conditions or use them in your tag template.'|translate}}"></cc-help>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="row">
+                      <div ng-repeat="type in view.types" class="col-md-4 col-sm-6">
+                        <div ng-click="view.setVariableType(type); view.validateVariable = false;" ng-class="{'active': view.variable.type.id === type.id || !view.formTouched }" tooltip-placement="right" tooltip-html-unsafe="{{ type.helper }}" tooltip-class="help-tooltip-wrapper" class="stg-tag-template stg-tag-template-btn">{{ type.name|translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-if="view.variable.type !== undefined" class="stepper-step">
+              <div class="stepper-index"><span>3</span></div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-8 col-md-12 col-sm-12">
+                    <label translate="Variable configuration" class="control-label"></label>
+                    <div ng-include="view.getConfigurationTemplate();"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div ng-if="currentContainer.$container.hasPermission('edit')" class="form-group">
+          <hr class="divider"/>
+          <input type="submit" value="{{&quot;Save&quot;|translate}}" class="btn btn-primary" ng-click="variableForm.$valid ? view.submitForm(view.variable) : view.displayInvalidFormMessage()" ng-disabled="!view.formTouched"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

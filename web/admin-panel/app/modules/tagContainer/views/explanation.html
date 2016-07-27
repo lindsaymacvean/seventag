@@ -1,0 +1,32 @@
+
+<div class="row">
+  <cc-breadcrumb ng-hide="view.success || $state.includes('containerExplanation')"></cc-breadcrumb>
+</div>
+<div class="row">
+  <div cg-busy="{promise: view.containerPromise, templateUrl: &quot;app/views/loader.html&quot;}" class="panel panel-default">
+    <div class="panel-body">
+      <cc-notification-form ng-if="$state.includes('editProfile')" ng-show="!view.loading"></cc-notification-form>
+      <h4 ng-hide="view.success" class="form-heading">{{ "Your container has been created" | translate }}</h4>
+      <p translate="What to do next:" class="stg-standalone-subheader"></p>
+      <p class="stg-standalone-text">1. {{'Copy the code and paste it into your website\'s code. You can also do it later.'|translate}}</p>
+      <p class="stg-standalone-text">2. <a ui-sref="tagCreate({containerId: view.container.id})">{{'Create a first tag'|translate}}</a>
+        <cc-help placement="right" content="{{'A tag is a snippet of JavaScript that sends information to a third party. You don\'t need to add your tags directly to your website, just specify how and when the tags should fire.'|translate}}"></cc-help></p>
+      <p class="stg-standalone-text">3. <a ui-sref="triggerCreate({containerId: view.container.id})">{{&quot;Create a trigger&quot;|translate}}</a>&nbsp;<span translate="and link it with the tag to fire it on your website."></span>
+        <cc-help placement="right" content="{{'A Trigger specifies how and when the tag should fire.'|translate}}"></cc-help></p>
+      <form name="editContainerForm" novalidate="novalidate" stg-form="stg-form" form-resource="undefined">
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div ng-class="{'has-error': (editContainerForm.viewContainerCode.$dirty &amp;&amp; editContainerForm.viewContainerCode.$invalid) || (false &amp;&amp; editContainerForm.viewContainerCode.$error.required)}" class="form-group">
+              <label class="control-label">{{'Container code'|translate}}</label>
+              <cc-help placement="right" content="{{&quot;Container code is a snippet which helps you to fire all your tags on your website. Paste the Container code into your website’s code (in between the &amp;lt;body&amp;gt; &amp;lt;body&amp;gt; element of all your pages).&quot;|translate}}"></cc-help>
+              <textarea name="viewContainerCode" ng-model="view.container.code" class="form-control" rows="10" readonly="readonly" cc-clipboard="cc-clipboard"></textarea>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <!-- Place for help-->
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

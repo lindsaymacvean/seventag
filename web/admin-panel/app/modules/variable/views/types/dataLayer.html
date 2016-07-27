@@ -1,0 +1,13 @@
+
+<!--mixin icon(name)-->
+<!--    i.icon-#{name}-->
+<div ng-class="{'has-error': (variableForm.value.$dirty &amp;&amp; variableForm.value.$invalid) || (view.validateVariable &amp;&amp; variableForm.value.$error.required) || variableForm.value.$error.value, 'has-feedback': (variableForm.value.$dirty &amp;&amp; variableForm.value.$invalid) || (view.validateVariable &amp;&amp; variableForm.value.$error.required)}" class="form-group">
+  <label class="control-label">{{'Data Layer variable name'|translate}} <span class="important">*</span></label>
+  <input type="text" name="value" ng-model="view.variable.value" ng-keypress="variableForm.value.$error.value !== undefined ? variableForm.value.$error = {} : ''" class="form-control" id="constant-variable-value" ng-required="true" ng-disabled="!currentContainer.$container.hasPermission('edit')"/><span ng-if="(undefined.$submitted &amp;&amp; undefined.viewAuthPassword.$invalid)" class="form-control-feedback icon-close"></span>
+  <div id="constant-variable-value-validation-message" ng-show="(variableForm.value.$error.required &amp;&amp; variableForm.value.$dirty) || (view.validateVariable &amp;&amp; variableForm.value.$error.required)">
+    <p translate="Required" class="error"></p>
+  </div>
+  <div id="undefined-validation-message" ng-show="variableForm.value.$error.value">
+    <p ng-repeat="error in variableForm.value.$error.value" class="error">{{ error|translate }}</p>
+  </div>
+</div>

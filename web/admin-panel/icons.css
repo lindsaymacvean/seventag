@@ -1,0 +1,148 @@
+@charset "UTF-8";
+/**
+ * Copyright (C) 2015 Digimedia Sp. z.o.o. d/b/a Clearcode
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This program is distrubuted in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+@font-face {
+  font-family: "7tagicon";
+  src: url("fonts/7tagicon.eot");
+  src: url("fonts/7tagicon.eot?#iefix") format("eot"), url("fonts/7tagicon.woff") format("woff"), url("fonts/7tagicon.ttf") format("truetype"), url("fonts/7tagicon.svg#7tagicon") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+.icon-arrow-down:before, .icon-arrow-left:before, .icon-arrow-right:before, .icon-arrow-thin-left:before, .icon-arrow-thin-right:before, .icon-arrow-up:before, .icon-cancel:before, .icon-close-fill:before, .icon-close:before, .icon-container:before, .icon-copy:before, .icon-debug:before, .icon-delete:before, .icon-dots:before, .icon-edit:before, .icon-hamburger-white:before, .icon-hamburger:before, .icon-home:before, .icon-info-circle:before, .icon-info-fill:before, .icon-integrations:before, .icon-key:before, .icon-last:before, .icon-list:before, .icon-logo:before, .icon-logout:before, .icon-next:before, .icon-options:before, .icon-publish:before, .icon-resolved:before, .icon-tag:before, .icon-trigger:before, .icon-unresolved:before, .icon-user:before, .icon-users:before, .icon-variable-insert:before, .icon-variable:before, .breadcumb > li + li:before {
+  display: inline-block;
+  font-family: "7tagicon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  text-decoration: inherit;
+  -webkit-font-smoothing: antialiased; }
+
+.icon-arrow-down:before {
+  content: ""; }
+
+.icon-arrow-left:before {
+  content: ""; }
+
+.icon-arrow-right:before {
+  content: ""; }
+
+.icon-arrow-thin-left:before {
+  content: ""; }
+
+.icon-arrow-thin-right:before {
+  content: ""; }
+
+.icon-arrow-up:before {
+  content: ""; }
+
+.icon-cancel:before {
+  content: ""; }
+
+.icon-close-fill:before {
+  content: ""; }
+
+.icon-close:before {
+  content: ""; }
+
+.icon-container:before {
+  content: ""; }
+
+.icon-copy:before {
+  content: ""; }
+
+.icon-debug:before {
+  content: ""; }
+
+.icon-delete:before {
+  content: ""; }
+
+.icon-dots:before {
+  content: ""; }
+
+.icon-edit:before {
+  content: ""; }
+
+.icon-hamburger-white:before {
+  content: ""; }
+
+.icon-hamburger:before {
+  content: ""; }
+
+.icon-home:before {
+  content: ""; }
+
+.icon-info-circle:before {
+  content: ""; }
+
+.icon-info-fill:before {
+  content: ""; }
+
+.icon-integrations:before {
+  content: ""; }
+
+.icon-key:before {
+  content: ""; }
+
+.icon-last:before {
+  content: ""; }
+
+.icon-list:before {
+  content: ""; }
+
+.icon-logo:before {
+  content: ""; }
+
+.icon-logout:before {
+  content: ""; }
+
+.icon-next:before {
+  content: ""; }
+
+.icon-options:before {
+  content: ""; }
+
+.icon-publish:before {
+  content: ""; }
+
+.icon-resolved:before {
+  content: ""; }
+
+.icon-tag:before {
+  content: ""; }
+
+.icon-trigger:before {
+  content: ""; }
+
+.icon-unresolved:before {
+  content: ""; }
+
+.icon-user:before {
+  content: ""; }
+
+.icon-users:before {
+  content: ""; }
+
+.icon-variable-insert:before {
+  content: ""; }
+
+.icon-variable:before {
+  content: ""; }
+
+.breadcumb > li + li:before {
+  content: "" !important; }

@@ -1,0 +1,11 @@
+{% spaceless %}
+<!-- Start 7Tag privacy opt-out code -->
+<script type="text/javascript" src="{{ url('get_privacy_optout_iframe', {'id': id}) }}"></script>
+<div id="_stg_opt_out_iframe_content" style="display: none;">
+    <p>You may choose not to have a unique tracking cookie identification number assigned to your computer to avoid the aggregation and analysis of data collected on this website.<br>To make that choice, please click below to receive an opt-out cookie.</p>
+    <input id="_stg_optout_checkbox" onclick="window.parent.storeUserOptOutPreferences();" type="checkbox">
+    <label id="_stg_optout_checkbox_label" for="_stg_optout_checkbox"></label>
+</div>
+<iframe id="_stg_opt_out_iframe" style="border:none;" width="100%" height="105px" src="about:blank" onload="loadOptOut();"></iframe>
+<!-- End 7Tag privacy opt-out code -->
+{% endspaceless %}

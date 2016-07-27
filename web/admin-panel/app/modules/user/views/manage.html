@@ -1,0 +1,38 @@
+
+<div class="row">
+  <cc-breadcrumb></cc-breadcrumb>
+</div>
+<div class="row">
+  <h2 class="page-header"><i class="icon-users"></i><strong translate="Users"></strong>
+    <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() &gt; 0" class="pull-right">
+      <a class="btn btn-primary btn-md stg-link-btn" id="user-list-create-link" href="href" ui-sref="userCreate()"><span class="plus">+</span><strong translate="Add a user"></strong>
+      </a>
+    </div>
+  </h2>
+  <div ng-if="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" class="alert alert-info alert-empty">
+    <h2 class="text-center"><strong translate="Your list is empty" translate-values="{ list: ENTITY_NAME.toLowerCase() }"></strong></h2>
+    <p ng-if="(currentContainer.$container.hasPermission('edit'))" class="text-center"><span translate="To add a new click the button below." translate-value="{ object: ENTITY_NAME }"></span></p>
+    <p class="text-center action">
+      <a class="btn btn-primary btn-md stg-link-btn" id="user-list-create-link" href="href" ui-sref="userCreate()"><span class="plus">+</span><strong translate="Add a user"></strong>
+      </a>
+    </p>
+  </div>
+  <table ng-table="view.tableParams" id="user-list" template-pagination="st-pagination.html" ng-hide="!view.tableParams.settings().$loading &amp;&amp; view.tableParams.total() === 0" template-header="user-list-st-header.html" class="table table-blocks">
+    <tbody>
+      <tr ng-repeat="user in $data" id="user-list-row-{{ $index }}" ng-init="showMenu = false">
+        <td sortable="name" id="user-list-row-{{ $index }}-user" class="col-md-4"><a ui-sref="userEdit({userId: user.id})" ui-sref-opts="{id: {{ user.id }}}"> <span title="{{ user.firstName + ' ' + user.lastName }}">{{ user.firstName + ' ' + user.lastName | limitTo : 43 }}{{ user.firstName.length + user.lastName.length > 42 ? '...' : '' }}</span></a></td>
+        <td sortable="email" id="user-list-row-{{ $index }}-email" class="col-md-3"><span title="{{ user.email }}">{{ user.email | limitTo : 30 }}{{ user.email.length > 30 ? '...' : '' }}</span></td>
+        <td sortable="role" id="user-list-row-{{ $index }}-role" class="col-md-1">{{ user.roles.indexOf('ROLE_SUPER_ADMIN') !== -1 ? 'Admin' : 'User' }}</td>
+        <td sortable="status" id="user-list-row-{{ $index }}-status" class="col-md-1"><span translate="Active" ng-if="user.status"></span><span translate="Inactive" ng-if="!user.status"></span></td>
+        <td sortable="createdAt" id="user-list-row-{{ $index }}-createdAt" class="col-md-2"> {{ user.createdAt | tmDate }}</td>
+        <td id="user-list-row-{{ $index }}-action" ng-class="{active: showMenu}" class="col-md-1 actions context-menu-actions">
+          <ul ng-if="showMenu" class="list-inline users-actions">
+            <li><a href="" ui-sref="userEdit({userId: user.id})" id="user-list-row-{{ $index }}-edit"><i class="icon-edit"></i><span translate="Edit"></span></a></li>
+            <li><a href="" cc-confirm="view.resetPassword(user)" id="user-list-row-{{ $index }}-reset-password"><i class="icon-key"></i><span translate="Reset password"></span></a></li>
+            <li><a href="" cc-confirm="view.removeUser(user)" id="user-list-row-{{ $index }}-delete"><i class="icon-delete"></i><span translate="Delete"></span></a></li>
+          </ul><a href="" ng-click="showMenu = !showMenu" class="dots"><i class="icon-dots"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

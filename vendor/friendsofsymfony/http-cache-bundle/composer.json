@@ -1,0 +1,54 @@
+{
+    "name": "friendsofsymfony/http-cache-bundle",
+    "type": "symfony-bundle",
+    "description": "Set path based HTTP cache headers and send invalidation requests to your HTTP cache",
+    "keywords": [ "http", "caching", "purge", "invalidation", "varnish", "esi" ],
+    "homepage": "https://github.com/FriendsOfSymfony/FOSHttpCacheBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Liip AG",
+            "homepage": "http://www.liip.ch/"
+        },
+        {
+            "name": "Driebit",
+            "homepage": "http://www.driebit.nl",
+            "email": "tech@driebit.nl"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/friendsofsymfony/FOSHttpCacheBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "friendsofsymfony/http-cache": "~1.4",
+        "symfony/framework-bundle": "~2.3"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "monolog/monolog": "*",
+        "sensio/framework-extra-bundle": "~2.3",
+        "symfony/symfony": "~2.3",
+        "symfony/phpunit-bridge": "~2.7",
+        "symfony/expression-language": "~2.4",
+        "symfony/monolog-bundle": "~2.3",
+        "polishsymfonycommunity/symfony-mocker-container": "~1.0",
+        "matthiasnoback/symfony-dependency-injection-test": "0.*"
+    },
+    "suggest": {
+        "sensio/framework-extra-bundle": "For Tagged Cache Invalidation",
+        "symfony/expression-language": "For Tagged Cache Invalidation",
+        "symfony/console": "To send invalidation requests from the command line"
+    },
+    "autoload": {
+        "psr-4": {
+            "FOS\\HttpCacheBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.3.x-dev"
+        }
+    }
+}

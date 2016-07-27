@@ -1,0 +1,5 @@
+.alert(ng-class="[type ? 'alert-' + type : null]")
+    button.close(type="button", ng-if="dismissable", ng-click="$hide()") &times;
+    strong(ng-bind="title") &nbsp;
+    span(ng-bind-html="content")
+

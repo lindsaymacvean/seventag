@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="fos_http_cache.proxy_client.varnish.class">FOS\HttpCache\ProxyClient\Varnish</parameter>
+    </parameters>
+
+    <services>
+        <service id="fos_http_cache.proxy_client.varnish"
+                 class="%fos_http_cache.proxy_client.varnish.class%">
+            <argument>%fos_http_cache.proxy_client.varnish.servers%</argument>
+            <argument>%fos_http_cache.proxy_client.varnish.base_url%</argument>
+            <argument type="service" id="fos_http_cache.proxy_client.varnish.guzzle_client" on-invalid="ignore"/>
+        </service>
+
+        <service id="fos_http_cache.test.client.varnish"
+                 parent="fos_http_cache.test.client.abstract"
+                 abstract="true">
+            <argument index="0">%fos_http_cache.proxy_client.varnish.base_url%</argument>
+        </service>
+
+    </services>
+
+</container>

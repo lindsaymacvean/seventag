@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="liip_functional_test.cache_sqlite_db">false</parameter>
+
+        <parameter key="liip_functional_test.html5validation.url">http://validator.nu/</parameter>
+
+        <parameter key="liip_functional_test.html5validation.ignores" type="collection" />
+
+        <parameter key="liip_functional_test.authentication" type="collection">
+            <parameter key="username"></parameter>
+            <parameter key="password"></parameter>
+        </parameter>
+
+        <parameter key="liip_functional_test.query_count.max_query_count">null</parameter>
+
+    </parameters>
+
+    <services>
+        <service id="liip_functional_test.query_count.query_count_client" class="Liip\FunctionalTestBundle\QueryCountClient" scope="prototype">
+            <argument type="service" id="kernel" />
+            <argument>%test.client.parameters%</argument>
+            <argument type="service" id="test.client.history" />
+            <argument type="service" id="test.client.cookiejar" />
+
+            <call method="setQueryCounter">
+                <argument type="service" id="liip_functional_test.query_count.query_counter" />
+            </call>
+        </service>
+
+        <service id="liip_functional_test.query_count.query_counter" class="Liip\FunctionalTestBundle\QueryCounter">
+            <argument>%liip_functional_test.query_count.max_query_count%</argument>
+            <argument type="service" id="annotation_reader" />
+        </service>
+    </services>
+</container>

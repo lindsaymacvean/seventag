@@ -1,0 +1,97 @@
+imports:
+    - { resource: 'repositories.yml' }
+    - { resource: 'forms.yml' }
+    - { resource: 'container_library.yml' }
+    - { resource: 'noScript.yml' }
+
+services:
+    seven_tag_container.tag_tree_handler.conditions_handler:
+        class: SevenTag\Api\ContainerBundle\TagTree\Handler\ConditionsHandler
+
+    seven_tag_container.tag_tree_handler.tags_handler:
+        class: SevenTag\Api\ContainerBundle\TagTree\Handler\TagsHandler
+        calls:
+          - [setNextHandler, [@seven_tag_container.tag_tree_handler.triggers_handler]]
+
+    seven_tag_container.tag_tree_handler.triggers_handler:
+        class: SevenTag\Api\ContainerBundle\TagTree\Handler\TriggersHandler
+        calls:
+          - [setNextHandler, [@seven_tag_container.tag_tree_handler.conditions_handler]]
+
+    seven_tag_container.tag_tree_handler.container_handler:
+        class: SevenTag\Api\ContainerBundle\TagTree\Handler\ContainerHandler
+        arguments: [@seven_tag_container.repository.container_repository]
+        calls:
+          - [setNextHandler, [@seven_tag_container.tag_tree_handler.tags_handler]]
+
+    seven_tag_container.tag_tree_builder:
+        class: SevenTag\Api\ContainerBundle\TagTree\Builder\TagTreeBuilder
+        arguments: [@seven_tag_container.tag_tree_handler.container_handler]
+
+    seven_tag_container.code_provider.cdn_url_generator:
+        class: SevenTag\Api\ContainerBundle\Cdn\CdnUrlGenerator
+        arguments: [@router, %seventag_javascript_url_template%]
+
+    seven_tag_container.code_provider.snippet_provider:
+        class: SevenTag\Api\ContainerBundle\CodeProvider\SnippetCodeProvider
+        arguments: [ @router, @templating.engine.twig ]
+
+    seven_tag_container.mode_resolver:
+        class: SevenTag\Api\ContainerBundle\ModeResolver\RequestModeResolver
+        arguments: [ @request_stack ]
+
+    seven_tag_container.service.previewmode_converter:
+        class: SevenTag\Api\ContainerBundle\ParamConverter\PreviewModeConverter
+        tags:
+            - { name: request.param_converter, converter: previewmode_converter }
+        arguments: [ @?doctrine, @seven_tag_container.mode_resolver ]
+
+    seven_tag_container.validator.grant_permissions_user:
+        class: SevenTag\Api\ContainerBundle\Validator\Constraints\GrantPermissionsUserValidator
+        arguments: [@security.token_storage]
+        tags:
+            - { name: validator.constraint_validator, alias: seven_tag_container_grant_permissions_user }
+
+    seven_tag_container.creator:
+        class: SevenTag\Api\ContainerBundle\Creator\Creator
+        arguments: [@doctrine.orm.entity_manager]
+
+    seven_tag_container.serializer.code_subscriber:
+        class: SevenTag\Api\ContainerBundle\Serializer\Subsriber\CodeSubscriber
+        arguments: [@seven_tag_container.code_provider.snippet_provider ]
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
+    seven_tag_container.listener.remove_container_permissons_listener:
+        class: SevenTag\Api\ContainerBundle\Listener\RemoveContainerPermissionsListener
+        arguments: [@seven_tag_container.repository.container_permissions_repository]
+        tags:
+            - { name: kernel.event_listener, event: seventag_container_library_event.container_removed, method: onRemoveContainer }
+
+    seven_tag_container.command.javascript_generator:
+        class: SevenTag\Api\ContainerBundle\Command\JavascriptGeneratorCommand
+        arguments: [@gaufrette.container_library_mock, @seven_tag_container.container_library.generator, @seven_tag_container.repository.container_repository]
+        tags:
+            - { name: console.command }
+
+    seven_tag_container.command.tagtree_generator:
+        class: SevenTag\Api\ContainerBundle\Command\TagtreeGeneratorCommand
+        arguments: [@gaufrette.container_library_mock, @seven_tag_container.tag_tree_builder, @seven_tag_container.repository.container_repository, @templating]
+        tags:
+            - { name: console.command }
+
+    seven_tag_container.command.republish_container_command:
+        class: SevenTag\Api\ContainerBundle\Command\RepublishContainerCommand
+        arguments: [@seven_tag_container.service.republish_container]
+        tags:
+            - { name: console.command }
+
+    seven_tag_container.service.republish_container:
+        class: SevenTag\Api\ContainerBundle\Service\RepublishContainer
+        arguments:
+            - '@seven_tag_container.repository.container_repository'
+            - '@event_dispatcher'
+
+    seven_tag_container.privacy.code_provider.snippet:
+        class: SevenTag\Api\ContainerBundle\Privacy\CodeProvider\SnippetProvider
+        arguments: [ @templating.engine.twig ]
